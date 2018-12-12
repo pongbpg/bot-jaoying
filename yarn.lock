@@ -408,9 +408,9 @@ acorn@^5.0.0:
   integrity sha512-T/zvzYRfbVojPWahDsE5evJdHb3oJoQfFbsrKM7w5Zcs++Tr257tia3BmMP8XYVjp1S9RZXQMh7gao96BlqZOw==
 
 activedirectory2@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/activedirectory2/-/activedirectory2-1.2.6.tgz#f405a5cd68779e8f31e46c532824478d4c887c44"
-  integrity sha512-uIOQPyTs+8N2UxetGXENquJH99fz0x/hZIfyGDE0YgGherydYk1THK5ZUjMtSzE31yBS/oevQr65Nv4BmBO2Cg==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/activedirectory2/-/activedirectory2-1.2.7.tgz#4b22055d303dfd3451cbf6d4cc44c100fe0547f2"
+  integrity sha512-gOI05h8RJoBy8GrRWp5Rx+LopCqdfLOBWzmAIM7F65qqmkX4nGRdVsH1rM9JmQCXNl12MLybUh8IB+xU7YzRFA==
   dependencies:
     abstract-logging "^1.0.0"
     async "^2.5.0"
