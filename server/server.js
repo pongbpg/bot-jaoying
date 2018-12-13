@@ -146,7 +146,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                             .then(counts => {
                                                 const countsData = counts.data();
                                                 let no = 1;
-                                                let cutoff = countsData.cutoff;
+                                                let cutoff = countsData.cutoff || false;
                                                 if (countsData.date == yyyymmdd()) {
                                                     no = countsData.no + 1;
                                                 } else {
