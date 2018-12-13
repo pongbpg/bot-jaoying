@@ -53,9 +53,7 @@ export class StockPage extends React.Component {
             amount: this.state.amount,
             action
         }).then(() => {
-            this.props.startGetStock().then(() => {
-                this.setState({ isLoading: '' })
-            })
+            this.setState({ isLoading: '' })
         })
 
     }
@@ -71,7 +69,7 @@ export class StockPage extends React.Component {
                     <table className="table is-fullwidth is-striped is-narrow">
                         <thead>
                             <tr>
-                                <th className="has-text-centered">ลำดับ</th>
+                                {/* <th className="has-text-centered">ลำดับ</th> */}
                                 <th className="has-text-left">รหัส</th>
                                 <th className="has-text-left">ชื่อสินค้า</th>
                                 <th className="has-text-right">คงเหลือ</th>
@@ -81,7 +79,7 @@ export class StockPage extends React.Component {
                         <tbody>
                             {this.state.stock.map((st, i) => {
                                 return <tr key={st.id}>
-                                    <td className="has-text-centered">{++i}</td>
+                                    {/* <td className="has-text-centered">{++i}</td> */}
                                     <td className="has-text-left">{st.id}</td>
                                     <td className="has-text-left">{st.name}</td>
                                     <td className="has-text-right">{Money(st.amount, 0)}</td>

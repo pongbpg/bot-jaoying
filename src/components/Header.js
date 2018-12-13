@@ -5,6 +5,7 @@ import { startLogout } from '../actions/auth';
 import MdMailOutline from 'react-icons/lib/md/mail-outline';
 import MdAlarmOn from 'react-icons/lib/md/alarm-on';
 import FaSearch from 'react-icons/lib/fa/search';
+import FaHome from 'react-icons/lib/fa/home';
 import FaFileTextO from 'react-icons/lib/fa/file-text-o';
 import MdPanTool from 'react-icons/lib/md/pan-tool';
 import MdAttachMoney from 'react-icons/lib/md/attach-money';
@@ -48,7 +49,7 @@ export class Header extends React.Component {
         <nav className="navbar is-dark">
           <div className="container">
             <div className="navbar-brand">
-              <Link className="navbar-item brand-text" to="/home">TOPSLIM STORE</Link>
+              <Link className="navbar-item brand-text" to="/home">JAOYING STORE</Link>
               <div data-target="navMenu" onClick={this.toggleIsBurger}
                 className={this.state.isBurger === true ? "navbar-burger burger is-active" : "navbar-burger burger"}>
                 <span></span>
@@ -58,27 +59,18 @@ export class Header extends React.Component {
             </div>
             <div id="navMenu" className={this.state.isBurger === true ? "navbar-menu is-active" : "navbar-menu"}>
               <div className="navbar-start">
+                <Link className="navbar-item" to="/home">
+                  <span className="icon"><FaHome /></span>หน้าแรก
+                </Link>
                 <Link className="navbar-item" to="/">
                   <span className="icon"><FaSearch /></span>ค้นหาพัสดุ
                 </Link>
-                {['stock', 'owner'].indexOf(this.state.auth.role) > -1 && (
-                  < Link className="navbar-item" to="/cutoff">
-                    <span className="icon"><MdAlarmOn /></span>ปิดรอบ
+                < Link className="navbar-item" to="/cutoff">
+                  <span className="icon"><MdAlarmOn /></span>ปิดรอบ
                     </Link>
-                )}
-                {['stock', 'owner'].indexOf(this.state.auth.role) > -1 && (
-                  <Link className="navbar-item" to="/orders">
-                    <span className="icon"><MdMailOutline /></span>เลขพัสดุ
+                <Link className="navbar-item" to="/orders">
+                  <span className="icon"><MdMailOutline /></span>เลขพัสดุ
                   </Link>
-                )}
-                <Link className="navbar-item" to="/sayhi">
-                  <span className="icon"><MdPanTool /></span>ยอดทัก
-                  </Link>
-                {['stock', 'owner'].indexOf(this.state.auth.role) > -1 && (
-                  <Link className="navbar-item" to="/cost">
-                    <span className="icon"><MdAttachMoney /></span>ค่าใช้จ่าย
-                  </Link>
-                )}
                 <Link className="navbar-item" to="/report">
                   <span className="icon"><FaFileTextO /></span>รายงาน
                   </Link>
