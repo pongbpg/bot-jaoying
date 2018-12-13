@@ -371,8 +371,8 @@ const initMsgOrder = (txt) => {
                                 //         value = 'undefined';
                                 //     }
                             } else if (key == 'name') {
-                                const deliver = value.substr(0, 1).toUpperCase();
-                                if (express.indexOf(deliver) == -1) {
+                                // const deliver = value.substr(0, 1).toUpperCase();
+                                if (value.length > 1) {
                                     value = 'undefined';
                                 }
                             } else if (key == 'bank') {
