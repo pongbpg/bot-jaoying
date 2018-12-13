@@ -372,7 +372,7 @@ const initMsgOrder = (txt) => {
                                 //     }
                             } else if (key == 'name') {
                                 // const deliver = value.substr(0, 1).toUpperCase();
-                                if (value.length > 1) {
+                                if (value.length < 2) {
                                     value = 'undefined';
                                 }
                             } else if (key == 'bank') {
