@@ -34,7 +34,7 @@ ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 const logOut = () => {
   store.dispatch(logout());
   renderApp();
-  history.push('/login');
+  history.push('/');
 }
 
 auth.onAuthStateChanged((user) => {

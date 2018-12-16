@@ -1,5 +1,5 @@
 import database, { auth, facebookAuthProvider } from '../firebase/firebase';
-import moment from 'moment';
+// import moment from 'moment';
 
 export const startLoginWithFacebook = () => {
     return () => {
