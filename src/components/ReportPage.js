@@ -107,14 +107,14 @@ export class ReportPage extends React.Component {
                                         <div className="field is-grouped is-grouped-centered">
                                             <p className="control">
                                                 <a className="button is-danger is-centered is-small"
-                                                    href={`http://yaumjai.com:3000/api/report/delivery?startDate=${moment(this.state.startDate).format('YYYYMMDD')}&file=pdf`}
+                                                    href={`http://yaumjai.com:3000/api/jaoying/delivery?startDate=${moment(this.state.startDate).format('YYYYMMDD')}&file=pdf`}
                                                     target="_blank">
                                                     PDF
                                         </a>
                                             </p>
                                             <p className="control">
                                                 <a className="button is-success is-centered is-small"
-                                                    href={`http://yaumjai.com:3000/api/report/delivery?startDate=${moment(this.state.startDate).format('YYYYMMDD')}&file=excel`}
+                                                    href={`http://yaumjai.com:3000/api/jaoying/delivery?startDate=${moment(this.state.startDate).format('YYYYMMDD')}&file=excel`}
                                                     target="_blank">
                                                     EXCEL
                                         </a>
