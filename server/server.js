@@ -81,8 +81,14 @@ app.post('/api/linebot', jsonParser, (req, res) => {
         db.collection('products').get()
             .then(snapShot => {
                 let pt = `${emoji(0x10005C)}รายการสินค้า${emoji(0x100060)}\n`;
+                let pds = [];
+                // let price = 0;
+                if (msg.split(':').length == 2) {
+                    pds = msg.split(':')[1].replace(/\s/g, '').split(',');
+                }
                 snapShot.forEach(product => {
-                    pt += `${product.id} ${product.name} ${formatMoney(product.data().amount, 0)},\n`;
+                    if (pds.length == 0 || pds.indexOf(product.id) > -1)
+                        pt += `${product.id} ${product.name},\n`;
                 })
                 obj.messages.push({
                     type: 'text',
