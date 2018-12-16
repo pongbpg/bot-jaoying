@@ -72,6 +72,7 @@ export class StockPage extends React.Component {
                                 {/* <th className="has-text-centered">ลำดับ</th> */}
                                 <th className="has-text-left">รหัส</th>
                                 <th className="has-text-left">ชื่อสินค้า</th>
+                                <th className="has-text-right">ต้นทุน</th>
                                 <th className="has-text-right">คงเหลือ</th>
                                 {this.state.auth.role == 'owner' && (< th className="has-text-right">จัดการ</th>)}
                             </tr>
@@ -82,6 +83,7 @@ export class StockPage extends React.Component {
                                     {/* <td className="has-text-centered">{++i}</td> */}
                                     <td className="has-text-left">{st.id}</td>
                                     <td className="has-text-left">{st.name}</td>
+                                    <td className="has-text-right">{Money(st.cost, 0)}</td>
                                     <td className="has-text-right">{Money(st.amount, 0)}</td>
                                     {((this.state.id !== st.id) && this.state.auth.role == 'owner') && (
                                         <td className="has-text-right">

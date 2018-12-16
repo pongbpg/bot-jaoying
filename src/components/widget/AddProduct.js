@@ -6,7 +6,8 @@ export class AddProduct extends React.Component {
         super(props);
         this.state = {
             name: '',
-            amount: 0
+            amount: '',
+            cost: ''
         }
     }
     onNameChange = (e) => {
@@ -20,12 +21,21 @@ export class AddProduct extends React.Component {
             })
         }
     }
+    onCostChange = (e) => {
+        const cost = e.target.value.replace(/\D/g, '');
+        if (!isNaN(cost)) {
+            this.setState({
+                cost: Number(cost)
+            })
+        }
+    }
     onAddClick = (e) => {
         this.props.startAddProduct({
             name: this.state.name,
-            amount: this.state.amount
+            amount: this.state.amount,
+            cost: this.state.cost,
         }).then(() => {
-            this.setState({ name: '', amount: 0 })
+            this.setState({ name: '', amount: '', cost: '' })
         })
     }
     render() {
@@ -45,10 +55,16 @@ export class AddProduct extends React.Component {
 
                         </p>
                         <p>
+                            <input className="input is-large" type="text" placeholder="ต้นทุน"
+                                value={this.state.cost}
+                                onChange={this.onCostChange} />
+                        </p>
+                        <p>
                             <input className="input is-large" type="text" placeholder="จำนวน"
                                 value={this.state.amount}
                                 onChange={this.onAmountChange} />
                         </p>
+
                         <p className="control">
                             <button className={`button is-success is-large is-rounded ${this.state.isLoading ? 'is-loading' : ''}`}
                                 onClick={this.onAddClick}>
