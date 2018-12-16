@@ -82,7 +82,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
             .then(snapShot => {
                 let pt = `${emoji(0x10005C)}รายการสินค้า${emoji(0x100060)}\n`;
                 snapShot.forEach(product => {
-                    pt += `${product.id} ${formatMoney(product.data().amount, 0)},\n`;
+                    pt += `${product.id} ${product.name} ${formatMoney(product.data().amount, 0)},\n`;
                 })
                 obj.messages.push({
                     type: 'text',
