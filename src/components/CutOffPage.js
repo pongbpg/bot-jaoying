@@ -18,13 +18,11 @@ export class CutOffPage extends React.Component {
         }
     }
     onCutOffClick = () => {
-        var r = confirm("จะปิดรอบจริงหรอเป้??!!");
+        var r = confirm("ต้องการจะปิดรอบใช่หรือไม่?");
         if (r == true) {
-            alert("ปิดรอบให้แล้วนะเป้!");
+            alert("ปิดรอบแล้ว!");
             this.props.startCutOff()
-            this.props.history.push('/orders')
-        } else {
-            alert("ยังไม่ได้ปิดรอบนะเป้ รอแอดมินแปป!!");
+            this.props.history.push('/home')
         }
     }
     render() {
@@ -33,14 +31,14 @@ export class CutOffPage extends React.Component {
                 <div className="hero-body">
                     <div className="container">
                         <h1 className="title">ปิดรอบ</h1>
-                        <h2 className="subtitle">วันที่ {moment(new Date()).format('ll')}</h2>
+                        <h2 className="subtitle">วันที่ {moment(this.state.cutoff.cutoffDate).format('ll')}</h2>
                     </div>
                 </div>
                 <nav className="level">
                     <p className="level-item has-text-centered">
                         <button className="button is-info is-centered is-large"
-                            onClick={this.onCutOffClick} disabled={this.state.cutoff}>
-                            ปิด{this.state.cutoff ? 'แล้ว' : 'รอบ'}จ้า
+                            onClick={this.onCutOffClick} disabled={this.state.cutoff.cutoff}>
+                            ปิด{this.state.cutoff.cutoff ? 'แล้ว' : 'รอบ'}จ้า
                         </button>
                     </p>
                 </nav>

@@ -14,11 +14,20 @@ export const startAddProduct = (product) => {
                         return true;
                     }
                 })
-                return firestore.collection('products').doc(count.toString()).set(product)
+                return firestore.collection('products').doc(threeDigit(count)).set(product)
                     .then(() => {
                         return "ok"
                     })
             })
+    }
+}
+const threeDigit = (n) => {
+    if (n < 100) {
+        return '00' + n.toString();
+    } else if (n < 1000) {
+        return '0' + n.toString()
+    } else {
+        return n.toString();
     }
 }
 
