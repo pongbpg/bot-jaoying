@@ -22,9 +22,9 @@ export const startAddProduct = (product) => {
     }
 }
 const threeDigit = (n) => {
-    if (n < 100) {
+    if (n < 10) {
         return '00' + n.toString();
-    } else if (n < 1000) {
+    } else if (n < 100) {
         return '0' + n.toString()
     } else {
         return n.toString();
