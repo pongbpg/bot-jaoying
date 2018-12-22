@@ -387,7 +387,10 @@ const initMsgOrder = (txt) => {
                                     value = 'undefined';
                                 }
                             } else if (key == 'bank') {
-                                if (value.match(/[a-zA-Z]+/g, '') == null || value.match(/\d{2}\.\d{2}/g) == null) {
+                                if (['XXX', 'BBLY', 'BBL', 'KBY', 'KB', 'SCBY', 'SCB'].indexOf(value) == -1) {
+                                    value = 'undefined';
+                                }
+                                if (value.match(/\d{2}\.\d{2}/g) == null && ['XXX'].indexOf(value) == -1) {
                                     value = 'undefined';
                                 }
                             }
