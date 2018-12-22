@@ -2,8 +2,9 @@ import firestore from '../../firebase/firebase';
 export const startGetStock = () => {
     console.log('get stock')
     return (dispatch) => {
-        return firestore.collection('products')//.get()
-            .onSnapshot(snapShot => {
+        return firestore.collection('products')
+            .get()
+            .then(snapShot => {
                 let stock = [];
                 snapShot.forEach(product => {
                     stock.push({ id: product.id, ...product.data() })
