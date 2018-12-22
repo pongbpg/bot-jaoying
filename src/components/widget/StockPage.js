@@ -54,7 +54,7 @@ export class StockPage extends React.Component {
             action
         }).then(() => {
             this.setState({ isLoading: '' })
-            this.props.startGetStock()
+            // this.props.startGetStock()
         })
 
     }
