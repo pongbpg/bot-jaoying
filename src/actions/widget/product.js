@@ -5,7 +5,7 @@ export const startAddProduct = (product) => {
         return firestore.collection('products').get()
             .then(snapShot => {
                 let products = [];
-                let count = 1;
+                let count = 0;
                 // let free = 1;
                 snapShot.forEach(doc => {
                     if (Number(doc.id) == count) {
