@@ -3,8 +3,8 @@ export const startGetStock = () => {
     console.log('get stock')
     return (dispatch) => {
         return firestore.collection('products')
-            .get()
-            .then(snapShot => {
+            //.get()
+            .onSnapshot(snapShot => {
                 let stock = [];
                 snapShot.forEach(product => {
                     stock.push({ id: product.id, ...product.data() })
