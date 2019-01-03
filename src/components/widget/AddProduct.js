@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { startAddProduct } from '../../actions/widget/product';
+import Money from '../../selectors/money';
 export class AddProduct extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             name: '',
             amount: '',
-            cost: ''
+            cost: '',
+            price: ''
         }
     }
     onNameChange = (e) => {
@@ -18,6 +20,14 @@ export class AddProduct extends React.Component {
         if (!isNaN(amount)) {
             this.setState({
                 amount: Number(amount)
+            })
+        }
+    }
+    onPriceChange = (e) => {
+        const price = e.target.value.replace(/\D/g, '');
+        if (!isNaN(price)) {
+            this.setState({
+                price: Number(price)
             })
         }
     }
@@ -32,11 +42,17 @@ export class AddProduct extends React.Component {
     onAddClick = (e) => {
         this.props.startAddProduct({
             name: this.state.name,
-            amount: this.state.amount,
-            cost: this.state.cost,
+            amount: this.state.amount == '' ? 0 : this.state.amount,
+            price: this.state.price == '' ? 0 : this.state.price,
+            cost: this.state.cost == '' ? 0 : this.state.cost
         }).then(() => {
-            this.setState({ name: '', amount: '', cost: '' })
+            this.setState({ name: '', amount: '', cost: '', price: '' })
         })
+    }
+    onHandleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.onAddClick();
+        }
     }
     render() {
         return (
@@ -47,7 +63,71 @@ export class AddProduct extends React.Component {
                     </div>
                 </div>
                 <div className="hero-body">
-                    <div className="field is-grouped">
+                    <div className="field is-horizontal">
+                        {/* <div className="field-label is-normal">
+                            <label className="label">Normal label</label>
+                        </div> */}
+                        <div className="field-body">
+                            <div className="field">
+                                <div className="control">
+                                    <input className="input" type="text" placeholder="ชื่อสินค้า"
+                                        value={this.state.name}
+                                        onKeyPress={this.onHandleKeyPress}
+                                        onChange={this.onNameChange} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="columns">
+                        <div className="column is-3">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="COST"
+                                            value={this.state.cost == '' ? '' : Money(this.state.cost, 0)}
+                                            onKeyPress={this.onHandleKeyPress}
+                                            onChange={this.onCostChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-3">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="ราคา"
+                                            value={this.state.price == '' ? '' : Money(this.state.price, 0)}
+                                            onKeyPress={this.onHandleKeyPress}
+                                            onChange={this.onPriceChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-3">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="จำนวน"
+                                            value={this.state.amount == '' ? '' : Money(this.state.amount, 0)}
+                                            onKeyPress={this.onHandleKeyPress}
+                                            onChange={this.onAmountChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-3">
+                            <div className="field-body">
+                                <div className="field">
+                                    <p className="control">
+                                        <button className={`button is-success is-fullwidth ${this.state.isLoading ? 'is-loading' : ''}`}
+                                            onClick={this.onAddClick}>
+                                            เพิ่ม</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="field is-grouped">
                         <p className="control is-expanded">
                             <input className="input is-large" type="text" placeholder="ชื่อสินค้า"
                                 value={this.state.name}
@@ -70,7 +150,7 @@ export class AddProduct extends React.Component {
                                 onClick={this.onAddClick}>
                                 เพิ่ม</button>
                         </p>
-                    </div>
+                    </div> */}
                 </div>
             </section >
         )

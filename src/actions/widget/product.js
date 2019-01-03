@@ -21,6 +21,16 @@ export const startAddProduct = (product) => {
             })
     }
 }
+export const startUpdateProduct = (product) => {
+    return (dispatch) => {
+        return firestore.collection('products').doc(product.id).update(product)
+    }
+}
+export const startDeleteProduct = (product) => {
+    return (dispatch) => {
+        return firestore.collection('products').doc(product.id).delete()
+    }
+}
 const threeDigit = (n) => {
     if (n < 10) {
         return '00' + n.toString();
