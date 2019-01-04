@@ -34,7 +34,11 @@ export class CutOff extends React.Component {
                             <td className="has-text-left">{moment(ct.id).format('ll')}</td>
                             <td className="has-text-centered">{ct.cutoff ? 'ปิดรอบแล้ว' : 'ยังไม่ปิดรอบ'}</td>
                             <td className="has-text-centered">
-                                <button className="button is-small">PDF</button>
+                            <a className="button is-danger is-centered is-small"
+                                                    href={`http://yaumjai.com:3000/api/jaoying/cutoffSale?cutoffDate=${moment(ct.id).format('YYYYMMDD')}&file=pdf`}
+                                                    target="_blank">
+                                                    PDF
+                                        </a>
                             </td>
                             <td className="has-text-centered">
                                 <input type="file" />
