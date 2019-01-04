@@ -40,7 +40,7 @@ export const startCutOff = (id) => {
                                         messages: [
                                             {
                                                 "type": "text",
-                                                "text": `>>>วันที่ ${moment(new Date()).format('ll')} ปิดรอบแล้วจ้า<<<`
+                                                "text": `${emoji(0x1000A6)}วันที่ ${moment(id).format('ll')} ปิดรอบแล้วจ้า${emoji(0x1000A6)}`
                                             }
                                         ]
                                     })
@@ -75,3 +75,4 @@ const today = () => {
     var now = new Date();
     return '' + now.getFullYear() + twoDigit(now.getMonth() + 1) + twoDigit(now.getDate());
 }
+const emoji = (hex) => { return String.fromCodePoint(hex) };
