@@ -236,7 +236,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                             callback();
                                                         })
                                                 } else {
-                                                    obj.messages.push({ type: `text`, text: `${emoji(0x1000A6)}ลงออเดอร์ไม่สำเร็จ! เนื่องจากยังไม่ได้เปิดรอบสั่งซื้อ${emoji(0x1000A6)}` })
+                                                    obj.messages.push({ type: `text`, text: `${emoji(0x1000A6)}ลงออเดอร์ไม่สำเร็จ! เนื่องจากยังไม่ได้เปิดรอบสั่งซื้อ` })
                                                     reply(obj);
                                                 }
 
