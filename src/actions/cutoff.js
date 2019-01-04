@@ -1,30 +1,36 @@
 import firestore from '../firebase/firebase';
-import { startListOrders } from './orders';
+// import { startListOrders } from './orders';
 import moment from 'moment';
 moment.locale('th');
-export const setCutOff = (cutoff) => ({
+export const setCutOff = (cutoffs) => ({
     type: 'SET_CUTOFF',
-    cutoff
+    cutoffs
 });
 export const startGetCutOff = () => {
     return (dispatch) => {
-        return firestore.collection('counter').doc('orders').get()
-            .then(cutoff => {
-                dispatch(setCutOff({ ...cutoff.data() }))
+        return firestore.collection('cutoffs')
+            // .get()
+            .onSnapshot(snapShot => {
+                let cutoffs = [];
+                snapShot.forEach(doc => {
+                    cutoffs.push({ id: doc.id, ...doc.data() })
+                })
+                dispatch(setCutOff(cutoffs))
             })
     }
 }
-export const startCutOff = () => {
+export const startCutOff = (id) => {
     return (dispatch) => {
-        return firestore.collection('counter').doc('orders').set({ cutoffDate: tomorrow(), cutoff: true }, { merge: true })
+        return firestore.collection('counter').doc('orders').update({ cutoff: true })
             .then(() => {
-                return firestore.collection('orders').where('cutoff', '==', false).get()
+                firestore.collection('cutoffs').doc(id).update({ cutoff: true })
+                return firestore.collection('orders').where('cutoffDate', '==', id).get()
                     .then(querySnapshot => {
                         querySnapshot.forEach(function (doc) {
-                            firestore.collection('orders').doc(doc.id).set({ ...doc.data(), cutoff: true })
+                            firestore.collection('orders').doc(doc.id).update({ cutoff: true })
                         })
-                        dispatch(setCutOff(true))
-                        dispatch(startListOrders())
+                        // dispatch(setCutOff(true))
+                        // dispatch(startListOrders())
                         return firestore.collection('groups').get()
                             .then(snapShot => {
                                 let boardcasts = [];

@@ -152,7 +152,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                             .then(counts => {
                                                 const countsData = counts.data();
                                                 let no = 1;
-                                                let cutoff = countsData.cutoff || false;
+                                                let cutoff = countsData.cutoff;
                                                 if (countsData.date == yyyymmdd()) {
                                                     no = countsData.no + 1;
                                                 } else {
@@ -172,8 +172,13 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                         cutoffOk = false;
                                                     }
                                                 } else {
-                                                    db.collection('counter').doc('orders').set({ date: orderDate, no, cutoff }, { merge: true })
-                                                    cutoff = false;
+                                                    if (cutoff === false) {
+                                                        db.collection('counter').doc('orders').update({ date: orderDate, no, cutoff })
+                                                        // cutoff = false;
+                                                    } else {
+                                                        cutoffOk = false;
+                                                    }
+
                                                 }
                                                 if (cutoffOk == true) {
                                                     db.collection('orders').doc(orderId)
@@ -231,7 +236,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                             callback();
                                                         })
                                                 } else {
-                                                    obj.messages.push({ type: `text`, text: 'แก้ไขรหัสสั่งซื้อ: ' + resultOrder.data.id + ' ไม่สำเร็จ!\nเนื่องจากข้อมูลวันตัดรอบไม่ถูกต้อง' })
+                                                    obj.messages.push({ type: `text`, text: 'ลงออเดอร์ไม่สำเร็จ!\nเนื่องจากยังไม่ได้เปิดรอบ' })
                                                     reply(obj);
                                                 }
 

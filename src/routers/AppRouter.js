@@ -4,7 +4,7 @@ import createHistory from 'history/createBrowserHistory';
 import LoginPage from '../components/LoginPage';
 import HomePage from '../components/HomePage';
 import OrderPage from '../components/OrderPage';
-import CutOffPage from '../components/CutOffPage';
+import CutOffPage from '../components/cutoffs/CutOffPage';
 import ReportPage from '../components/ReportPage';
 import TrackingPage from '../components/TrackingPage';
 // import SayHiPage from '../components/SayHiPage';

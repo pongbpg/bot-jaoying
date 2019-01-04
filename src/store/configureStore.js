@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from '../reducers/auth';
 import ordersReducer from '../reducers/orders';
-import cutoffReducer from '../reducers/cutoff';
+import cutoffsReducer from '../reducers/cutoffs';
 import searchReducer from '../reducers/search';
 import stockReducer from '../reducers/stock';
 import pagesReducer from '../reducers/pages';
@@ -15,7 +15,7 @@ export default () => {
     combineReducers({
       auth: authReducer,
       orders: ordersReducer,
-      cutoff: cutoffReducer,
+      cutoffs: cutoffsReducer,
       search: searchReducer,
       stock: stockReducer,
       pages: pagesReducer,
