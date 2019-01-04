@@ -21,47 +21,75 @@ export const startGetCutOff = () => {
 }
 export const startCutOff = (id) => {
     return (dispatch) => {
-        return firestore.collection('counter').doc('orders').update({ cutoff: true })
-            .then(() => {
-                firestore.collection('cutoffs').doc(id).update({ cutoff: true })
-                return firestore.collection('orders').where('cutoffDate', '==', id).get()
-                    .then(querySnapshot => {
-                        querySnapshot.forEach(function (doc) {
-                            firestore.collection('orders').doc(doc.id).update({ cutoff: true })
-                        })
-                        // dispatch(setCutOff(true))
-                        // dispatch(startListOrders())
-                        return firestore.collection('groups').get()
-                            .then(snapShot => {
-                                let boardcasts = [];
-                                snapShot.forEach(group => {
-                                    boardcasts.push({
-                                        to: group.id,
-                                        messages: [
-                                            {
-                                                "type": "text",
-                                                "text": `${emoji(0x1000A6)}วันที่ ${moment(id).format('ll')} ปิดรอบแล้วจ้า${emoji(0x1000A6)}`
-                                            }
-                                        ]
-                                    })
-                                })
-                                fetch('./api/boardcast', {
-                                    body: JSON.stringify({ boardcasts }),
-                                    headers: {
-                                        // 'user-agent': 'Mozilla/4.0 MDN Example',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    method: 'post'
-                                })
-                                    .then(response => response.json())
-                                    .then(result => {
-                                        console.log(result);
-                                    })
+        firestore.collection('counter').doc('orders').update({ cutoff: true })
+        firestore.collection('cutoffs').doc(id).update({ cutoff: true })
+        return firestore.collection('orders').where('cutoffDate', '==', id).get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(function (doc) {
+                    firestore.collection('orders').doc(doc.id).update({ cutoff: true })
+                })
+                return firestore.collection('groups').get()
+                    .then(snapShot => {
+                        let boardcasts = [];
+                        snapShot.forEach(group => {
+                            boardcasts.push({
+                                to: group.id,
+                                messages: [
+                                    {
+                                        "type": "text",
+                                        "text": `${emoji(0x100035)}วันที่ ${moment(id).format('ll')} ปิดรอบแล้วจ้า${emoji(0x100035)}`
+                                    }
+                                ]
                             })
+                        })
+                        fetch('./api/boardcast', {
+                            body: JSON.stringify({ boardcasts }),
+                            headers: {
+                                // 'user-agent': 'Mozilla/4.0 MDN Example',
+                                'Content-Type': 'application/json'
+                            },
+                            method: 'post'
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                console.log(result);
+                            })
+                    })
 
-                    });
+            });
+    }
+}
+export const startCutOn = (id) => {
+    return (dispatch) => {
+        firestore.collection('counter').doc('orders').update({ cutoff: false, cutoffDate: id })
+        firestore.collection('cutoffs').doc(id).set({ cutoff: false })
+        return firestore.collection('groups').get()
+            .then(snapShot => {
+                let boardcasts = [];
+                snapShot.forEach(group => {
+                    boardcasts.push({
+                        to: group.id,
+                        messages: [
+                            {
+                                "type": "text",
+                                "text": `${emoji(0x100041)}วันที่ ${moment(id).format('ll')} เปิดรอบแล้วจ้า${emoji(0x100041)}`
+                            }
+                        ]
+                    })
+                })
+                fetch('./api/boardcast', {
+                    body: JSON.stringify({ boardcasts }),
+                    headers: {
+                        // 'user-agent': 'Mozilla/4.0 MDN Example',
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'post'
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result);
+                    })
             })
-
     }
 }
 const tomorrow = () => {
