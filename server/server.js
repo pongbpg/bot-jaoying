@@ -383,8 +383,8 @@ const initMsgOrder = (txt) => {
                 if (product) {
                     if (product.amount >= amount) {
                         data.product[order]['name'] = product.name;
-                        orders[order]['cost'] = product.cost;
-                        orders[order]['price'] = product.price;
+                        data.product[order]['cost'] = product.cost || 0;
+                        data.product[order]['price'] = product.price || 0;
                     } else {
                         data.product[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น`;
                         data.product[order]['amount'] = 'undefined';
