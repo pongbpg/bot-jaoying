@@ -165,12 +165,12 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                 if (resultOrder.data.id && user.data().role == 'owner') { //edit with id
                                                     orderId = resultOrder.data.id;
                                                     orderDate = resultOrder.data.id.split('-')[0];
-                                                    cutoff = true;
-                                                    if (resultOrder.data.cutoffDate) {
-                                                        cutoffDate = resultOrder.data.cutoffDate;
-                                                    } else {
-                                                        cutoffOk = false;
-                                                    }
+                                                    // cutoff = true;
+                                                    // if (resultOrder.data.cutoffDate) {
+                                                    //     cutoffDate = resultOrder.data.cutoffDate;
+                                                    // } else {
+                                                    //     cutoffOk = false;
+                                                    // }
                                                 } else {
                                                     if (cutoff === false) {
                                                         db.collection('counter').doc('orders').update({ date: orderDate, no, cutoff })
@@ -197,36 +197,22 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                 for (var p = 0; p < resultOrder.data.product.length; p++) {
                                                                     await db.collection('products').doc(resultOrder.data.product[p].code).get()
                                                                         .then(product => {
-                                                                            const balance = product.data().amount - resultOrder.data.product[p].amount;
-                                                                            if (balance <= product.data().alert) {
-                                                                                db.collection('admins').get()
-                                                                                    .then(snapShot => {
-                                                                                        snapShot.forEach(admin => {
-                                                                                            push({
-                                                                                                to: admin.id,
-                                                                                                messages: [
-                                                                                                    {
-                                                                                                        "type": "text",
-                                                                                                        "text": `สินค้า ${product.id}\n${product.data().name}\nเหลือแค่ ${balance} ชิ้นละจ้า`
-                                                                                                    }
-                                                                                                ]
-                                                                                            })
-                                                                                        })
-                                                                                    })
-                                                                            }
-                                                                            db.collection('products').doc(resultOrder.data.product[p].code)
-                                                                                .set({ amount: balance }, { merge: true })
+                                                                            const amount = product.data().amount - resultOrder.data.product[p].amount;
+                                                                            db.collection('products').doc(resultOrder.data.product[p].code).set({ amount }, { merge: true })
                                                                         })
                                                                 }
+                                                                // await db.collection('orders')
+                                                                // .where('cutoffDate','==',cutoffDate)
                                                                 await obj.messages.push({
                                                                     type: 'text',
-                                                                    text: `รหัสสั่งซื้อ: ${orderId}\n${resultOrder.text}\n\n${emoji(0x100037)}โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง
-\n${emoji(0x1000AE)}ลูกค้าเห็นข้อความนี้แล้วไม่ต้องพิมตอบกลับนะคะ กันตกหล่นเวลาแจ้งเลขพัสดุ
-\n${emoji(0x10002D)}กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้คะ
-\n${emoji(0x10002D)}แจ้งเลขพัสดุหลังบ่าย 3 โมงเป็นต้นไป ทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) คะ
-\n${emoji(0x10002D)}ได้รับสินค้าแล้วอย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทอง${emoji(0x100035)}นะคะ ทางร้านมีแจกทองทุกเดือน${emoji(0x100071)}
-\n${emoji(0x10002D)}สำคัญ หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`
-                                                                })
+                                                                    text: `รหัสสั่งซื้อ: ${orderId}\n${resultOrder.text}`})
+//                                                                     \n\n${emoji(0x100037)}โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง
+// \n${emoji(0x1000AE)}ลูกค้าเห็นข้อความนี้แล้วไม่ต้องพิมตอบกลับนะคะ กันตกหล่นเวลาแจ้งเลขพัสดุ
+// \n${emoji(0x10002D)}กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้คะ
+// \n${emoji(0x10002D)}แจ้งเลขพัสดุหลังบ่าย 3 โมงเป็นต้นไป ทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) คะ
+// \n${emoji(0x10002D)}ได้รับสินค้าแล้วอย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทอง${emoji(0x100035)}นะคะ ทางร้านมีแจกทองทุกเดือน${emoji(0x100071)}
+// \n${emoji(0x10002D)}สำคัญ หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`
+                                                                // })
                                                                 await obj.messages.push({
                                                                     type: 'text',
                                                                     text: `@@ยกเลิก:${orderId}`
@@ -354,47 +340,23 @@ const initMsgOrder = (txt) => {
                                     })
                                 }
                             } else {
-                                const orderIndex = orders.findIndex(f => f.code == 'รหัสสินค้า');
+                                const orderIndex = orders.findIndex(f => f.code == 'สินค้า');
                                 if (orderIndex > -1) {
 
                                 } else {
                                     orders.push({
-                                        code: 'รหัสสินค้า',
+                                        code: 'สินค้า',
                                         amount: 'undefined'
                                     })
                                 }
                             }
                         }
-                        // for (var order in orders) {
-                        //     const code = orders[order]['code'];
-                        //     const amount = orders[order]['amount'];
-                        //     const product = products.find(f => f.id === orders[order]['code'])
-                        //     if (product) {
-                        //         if (product.amount >= amount) {
-                        //             orders[order]['name'] = product.name;
-                        //         } else {
-                        //             orders[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น${emoji(0x10001C)}`;
-                        //             orders[order]['amount'] = 'undefined';
-                        //         }
-                        //     } else {
-                        //         orders[order]['code'] = ' รหัส' + code + 'ไม่มีในรายการสินค้า';
-                        //         orders[order]['amount'] = 'undefined';
-                        //     }
-                        // }
                         value = orders;
-                        // } else if (key == 'page') {
-                        //     if (pages.indexOf(value) == -1) {
-                        //         value = 'undefined';
-                        //     }
                     } else if (key == 'name') {
-                        // const deliver = value.substr(0, 1).toUpperCase();
                         if (value.length < 2) {
                             value = 'undefined';
                         }
                     } else if (key == 'bank') {
-                        // if (['XXX', 'BBLY', 'BBL', 'KBY', 'KB', 'SCBY', 'SCB'].indexOf(value) == -1) {
-                        //     value = 'undefined';
-                        // }
                         if (value.match(/\d{2}\.\d{2}/g) == null || value.match(/[a-zA-Z]+/g, '') == null) {
                             value = 'undefined';
                         }
@@ -420,6 +382,8 @@ const initMsgOrder = (txt) => {
                 if (product) {
                     if (product.amount >= amount) {
                         data.product[order]['name'] = product.name;
+                        data.product[order]['cost'] = product.cost;
+                        data.product[order]['price'] = product.price;
                     } else {
                         data.product[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น`;
                         data.product[order]['amount'] = 'undefined';
@@ -449,7 +413,7 @@ const formatOrder = (data) => {
             ? data.product.map((p, i) => '\n' + p.code + ':' + p.name + ' ' + p.amount + 'ชิ้น ')
             : 'undefined'} 
 ธนาคาร: ${data.bank} 
-ยอดชำระ: ${data.price || data.bank == 'CM' ? formatMoney(data.price, 0) + ' บาท' : 'undefined'} 
+ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'undefined'} 
 FB/Line: ${data.fb}`;
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
