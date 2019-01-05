@@ -315,7 +315,7 @@ const initMsgOrder = (txt) => {
                         value = 'เบอร์โทรไม่ครบ 10 หลักundefined'
                     }
                 }
-                if (key !== 'price' && key !== 'delivery') {
+                if (key !== 'price') {
                     value = value.trim();
                     if (key == 'product') {
                         const str = value;
@@ -341,20 +341,20 @@ const initMsgOrder = (txt) => {
 
                                 } else {
                                     orders.push({
-                                        code: 'สินค้าไม่ถูกต้อง',
+                                        code: 'รหัสสินค้าไม่ถูกต้อง',
                                         amount: 'undefined'
                                     })
                                 }
                             }
                         }
                         value = orders;
-                    } else if (key == 'name') {
+                    } else if (key == 'name' || key == 'fb') {
                         if (value.length < 2) {
-                            value = 'ชื่อไม่ถูกต้องundefined';
+                            value = 'ไม่ถูกต้องundefined';
                         }
                     } else if (key == 'bank') {
                         if (value.match(/\d{2}\.\d{2}/g) == null || value.match(/[a-zA-Z]+/g, '') == null) {
-                            value = 'ธนาคารไม่ถูกต้องundefined';
+                            value = 'ไม่ถูกต้องundefined';
                         }
                     }
                 } else {
@@ -402,15 +402,15 @@ const initMsgOrder = (txt) => {
 }
 const formatOrder = (data) => {
     return `
-ชื่อ: ${data.name} 
-เบอร์โทร: ${data.tel} 
-ที่อยู่: ${data.addr} 
+ชื่อ: ${data.name ? data.name : 'ไม่มีundefined'} 
+เบอร์โทร: ${data.tel ? data.tel : 'ไม่มีundefined'}  
+ที่อยู่: ${data.addr ? data.addr : 'ไม่มีundefined'} 
 สินค้า: ${data.product
             ? data.product.map((p, i) => '\n' + p.code + ':' + p.name + ' ' + p.amount + 'ชิ้น ')
-            : 'undefined'} 
+            : 'ไม่มีundefined'} 
 ธนาคาร: ${data.bank} 
-ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'ไม่ถูกต้องundefined'} 
-FB: ${data.fb}`;
+ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'ไม่มีundefined'} 
+FB: ${data.fb ? data.fb : 'ไม่มีundefined'} `;
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
