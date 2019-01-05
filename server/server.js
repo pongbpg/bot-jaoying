@@ -312,7 +312,7 @@ const initMsgOrder = (txt) => {
                 if (key == 'tel') {
                     value = value.replace(/\D/g, ''); //เหลือแต่ตัวเลข
                     if (value.length != 10) {
-                        value = 'เบอร์โทรไม่ครบ 10 หลักundefined'
+                        value = `${emoji(0x1000A6)}เบอร์โทรไม่ครบ 10 หลักundefined`
                     }
                 }
                 if (key !== 'price') {
@@ -341,7 +341,7 @@ const initMsgOrder = (txt) => {
 
                                 } else {
                                     orders.push({
-                                        code: 'รหัสสินค้าไม่ถูกต้อง',
+                                        code: `${emoji(0x1000A6)}รหัสสินค้าไม่ถูกต้อง`,
                                         amount: 'undefined'
                                     })
                                 }
@@ -350,11 +350,11 @@ const initMsgOrder = (txt) => {
                         value = orders;
                     } else if (key == 'name' || key == 'fb') {
                         if (value.length < 2) {
-                            value = 'ไม่ถูกต้องundefined';
+                            value = `${emoji(0x1000A6)}undefined`;
                         }
                     } else if (key == 'bank') {
                         if (value.match(/\d{2}\.\d{2}/g) == null || value.match(/[a-zA-Z]+/g, '') == null) {
-                            value = 'ไม่ถูกต้องundefined';
+                            value = `${emoji(0x1000A6)}undefined`;
                         }
                     }
                 } else {
@@ -381,11 +381,11 @@ const initMsgOrder = (txt) => {
                         data.product[order]['cost'] = product.cost || 0;
                         data.product[order]['price'] = product.price || 0;
                     } else {
-                        data.product[order]['code'] = code + `เหลือเพียง${product.amount}ชิ้น`;
+                        data.product[order]['code'] = `${emoji(0x1000A6)}` + code + `เหลือเพียง${product.amount}ชิ้น`;
                         data.product[order]['amount'] = 'undefined';
                     }
                 } else {
-                    data.product[order]['code'] = ' รหัส' + code + 'ไม่มีในรายการสินค้า';
+                    data.product[order]['code'] = `${emoji(0x1000A6)}รหัส` + code + 'ไม่มีในรายการสินค้า';
                     data.product[order]['amount'] = 'undefined';
                 }
             }
@@ -402,15 +402,15 @@ const initMsgOrder = (txt) => {
 }
 const formatOrder = (data) => {
     return `
-ชื่อ: ${data.name ? data.name : 'ไม่มีundefined'} 
-เบอร์โทร: ${data.tel ? data.tel : 'ไม่มีundefined'}  
-ที่อยู่: ${data.addr ? data.addr : 'ไม่มีundefined'} 
+ชื่อ: ${data.name ? data.name : `${emoji(0x1000A6)}undefined`} 
+เบอร์โทร: ${data.tel ? data.tel : `${emoji(0x1000A6)}undefined`}  
+ที่อยู่: ${data.addr ? data.addr : `${emoji(0x1000A6)}undefined`} 
 สินค้า: ${data.product
             ? data.product.map((p, i) => '\n' + p.code + ':' + p.name + ' ' + p.amount + 'ชิ้น ')
-            : 'ไม่มีundefined'} 
+            : `${emoji(0x1000A6)}undefined`} 
 ธนาคาร: ${data.bank} 
-ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'ไม่มีundefined'} 
-FB: ${data.fb ? data.fb : 'ไม่มีundefined'} `;
+ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : `${emoji(0x1000A6)}undefined`} 
+FB: ${data.fb ? data.fb : `${emoji(0x1000A6)}undefined`} `;
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
