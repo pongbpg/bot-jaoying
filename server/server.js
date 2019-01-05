@@ -421,17 +421,17 @@ FB: ${data.fb ? data.fb : `${emoji(0x1000A6)}undefined`} `;
 }
 const txtListOrders = (orders) => {
     const len = orders.length - 1;
-    return 'ชื่อลูกค้า: ' + orders[len].name +
+    return 'ลูกค้า: ' + orders[len].name +
         '\nเบอร์โทร: ' + orders[len].tel +
         '\nที่อยู่: ' + orders[len].addr +
         '\nFB: ' + orders[len].fb +
-        `\n${emoji(0x1000B3)} รายการสั่งซื้อ ${emoji(0x1000B3)}` + orders.map((order, i) => {
-            return `\n\t${emoji(0x100041)}ครั้งที่ #` + (i + 1) + ' ' + order.id +
-                order.product.map(product => {
-                    return '\n\t\t' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
-                }) + '\n\tยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
-        }) +
         '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท' +
+        `\n${emoji(0x1000B3)} รายการสั่งซื้อ ${emoji(0x1000B3)}` + orders.map((order, i) => {
+            return `\n${emoji(0x100041)}ครั้งที่ #` + (i + 1) + ' ' + order.id +
+                order.product.map(product => {
+                    return '\n\t\t\t' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
+                }) + '\n\t\t\tยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
+        }).replace(/,/g, '') +
         `\n\n${emoji(0x100037)}โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง` +
         `\n${emoji(0x10002D)}กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้คะ` +
         `\n${emoji(0x10002D)}แจ้งเลขพัสดุทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) คะ` +
