@@ -165,12 +165,6 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                 if (resultOrder.data.id && user.data().role == 'owner') { //edit with id
                                                     orderId = resultOrder.data.id;
                                                     orderDate = resultOrder.data.id.split('-')[0];
-                                                    // cutoff = true;
-                                                    // if (resultOrder.data.cutoffDate) {
-                                                    //     cutoffDate = resultOrder.data.cutoffDate;
-                                                    // } else {
-                                                    //     cutoffOk = false;
-                                                    // }
                                                 } else {
                                                     if (cutoff === false) {
                                                         db.collection('counter').doc('orders').update({ date: orderDate, no, cutoff })
@@ -230,7 +224,8 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                             })
 
                                     } else {
-                                        obj.messages.push({ type: `text`, text: resultOrder.text })
+
+                                        obj.messages.push({ type: `text`, text: `${emoji(0x1000A6)} รายการสั่งของคุณไม่ถูกต้องค่ะ\nกรุณาตรวจสอบ ${resultOrder.text}` })
                                         reply(obj);
                                     }
                                 })
@@ -308,7 +303,7 @@ const initMsgOrder = (txt) => {
                     // case 'l': key = 'fb'; break;
                     // case 'z': key = 'page'; break;
                     // case 'd': key = 'delivery'; break;
-                    case 'cutoffdate': key = 'cutoffDate'; break;
+                    // case 'cutoffdate': key = 'cutoffDate'; break;
                     default: key;
                 }
                 let value = m.split(':')[1];
@@ -317,7 +312,7 @@ const initMsgOrder = (txt) => {
                 if (key == 'tel') {
                     value = value.replace(/\D/g, ''); //เหลือแต่ตัวเลข
                     if (value.length != 10) {
-                        value = 'undefined'
+                        value = 'เบอร์โทรไม่ครบ 10 หลักundefined'
                     }
                 }
                 if (key !== 'price' && key !== 'delivery') {
@@ -346,7 +341,7 @@ const initMsgOrder = (txt) => {
 
                                 } else {
                                     orders.push({
-                                        code: 'สินค้า',
+                                        code: 'สินค้าไม่ถูกต้อง',
                                         amount: 'undefined'
                                     })
                                 }
@@ -355,11 +350,11 @@ const initMsgOrder = (txt) => {
                         value = orders;
                     } else if (key == 'name') {
                         if (value.length < 2) {
-                            value = 'undefined';
+                            value = 'ชื่อไม่ถูกต้องundefined';
                         }
                     } else if (key == 'bank') {
                         if (value.match(/\d{2}\.\d{2}/g) == null || value.match(/[a-zA-Z]+/g, '') == null) {
-                            value = 'undefined';
+                            value = 'ธนาคารไม่ถูกต้องundefined';
                         }
                     }
                 } else {
@@ -398,11 +393,11 @@ const initMsgOrder = (txt) => {
             const indexUndefined = text.indexOf('undefined');
             let success = true;
             if (indexUndefined > -1) {
-                const t = text.substring(0, indexUndefined - 1).split(' ');
-                text = `${emoji(0x1000A6)} รายการสั่งของคุณไม่ถูกต้องค่ะ\nกรุณาตรวจสอบ ${t[t.length - 1]}`;
+                // const t = text.substring(0, indexUndefined - 1).split(' ');
+                // text = `${emoji(0x1000A6)} รายการสั่งของคุณไม่ถูกต้องค่ะ\nกรุณาตรวจสอบ ${t[t.length - 1]}`;
                 success = false;
             }
-            return { text, success, data };
+            return { text: text.replace(/undefined/g, ''), success, data };
         })
 }
 const formatOrder = (data) => {
@@ -414,8 +409,8 @@ const formatOrder = (data) => {
             ? data.product.map((p, i) => '\n' + p.code + ':' + p.name + ' ' + p.amount + 'ชิ้น ')
             : 'undefined'} 
 ธนาคาร: ${data.bank} 
-ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'undefined'} 
-FB/Line: ${data.fb}`;
+ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : 'ไม่ถูกต้องundefined'} 
+FB: ${data.fb}`;
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
