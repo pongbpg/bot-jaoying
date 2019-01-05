@@ -195,18 +195,23 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                             db.collection('products').doc(resultOrder.data.product[p].code).set({ amount }, { merge: true })
                                                                         })
                                                                 }
-                                                                // await db.collection('orders')
-                                                                // .where('cutoffDate','==',cutoffDate)
-                                                                await obj.messages.push({
-                                                                    type: 'text',
-                                                                    text: `รหัสสั่งซื้อ: ${orderId}\n${resultOrder.text}`
-                                                                })
-                                                                //                                                                     \n\n${emoji(0x100037)}โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง
-                                                                // \n${emoji(0x1000AE)}ลูกค้าเห็นข้อความนี้แล้วไม่ต้องพิมตอบกลับนะคะ กันตกหล่นเวลาแจ้งเลขพัสดุ
-                                                                // \n${emoji(0x10002D)}กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้คะ
-                                                                // \n${emoji(0x10002D)}แจ้งเลขพัสดุหลังบ่าย 3 โมงเป็นต้นไป ทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) คะ
-                                                                // \n${emoji(0x10002D)}ได้รับสินค้าแล้วอย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทอง${emoji(0x100035)}นะคะ ทางร้านมีแจกทองทุกเดือน${emoji(0x100071)}
-                                                                // \n${emoji(0x10002D)}สำคัญ หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`
+                                                                await db.collection('orders')
+                                                                    .where('cutoffDate', '==', cutoffDate)
+                                                                    .where('tel', '==', resultOrder.data.tel)
+                                                                    .get()
+                                                                    .then(snapShot => {
+                                                                        let orders = [];
+                                                                        snapShot.forEach(doc => {
+                                                                            orders.push({ id: doc.id, ...doc.data() })
+                                                                        })
+                                                                        obj.messages.push({
+                                                                            type: 'text',
+                                                                            text: txtListOrders(orders)
+                                                                        })
+                                                                    })
+                                                                // await  obj.messages.push({
+                                                                //     type: 'text',
+                                                                //     text: `รหัสสั่งซื้อ: ${orderId}\n${resultOrder.text}`
                                                                 // })
                                                                 await obj.messages.push({
                                                                     type: 'text',
@@ -217,7 +222,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                             callback();
                                                         })
                                                 } else {
-                                                    obj.messages.push({ type: `text`, text: `${emoji(0x1000A6)}ลงออเดอร์ไม่สำเร็จ! เนื่องจากยังไม่ได้เปิดรอบสั่งซื้อ` })
+                                                    obj.messages.push({ type: `text`, text: `${emoji(0x1000A6)}รายการสั่งซื้อไม่สำเร็จ! เนื่องจากยังไม่ได้เปิดรอบสั่งซื้อ` })
                                                     reply(obj);
                                                 }
 
@@ -413,6 +418,25 @@ const formatOrder = (data) => {
 ธนาคาร: ${data.bank} 
 ยอดชำระ: ${data.price ? formatMoney(data.price, 0) + ' บาท' : `${emoji(0x1000A6)}undefined`} 
 FB: ${data.fb ? data.fb : `${emoji(0x1000A6)}undefined`} `;
+}
+const txtListOrders = (orders) => {
+    const len = orders.length - 1;
+    return 'ชื่อ: ' + orders[len].name +
+        '\nโทร: ' + orders[len].tel +
+        '\nที่อยู่: ' + orders[len].addr +
+        '\nFB: ' + orders[len].fb +
+        '\nรายการสั่งซื้อ' + orders.map((order, i) => {
+            return '\n#' + (i + 1) + ' ' + order.id +
+                order.product.map(product => {
+                    return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'
+                }) + '\n' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'
+        }) +
+        '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท' +
+        `\n\n${emoji(0x100037)}โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง` +
+        `\n${emoji(0x10002D)}กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้คะ` +
+        `\n${emoji(0x10002D)}แจ้งเลขพัสดุทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) คะ` +
+        `\n${emoji(0x10002D)}อย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทองทุกเดือน${emoji(0x100071)}` +
+        `\n${emoji(0x10002D)}สำคัญ หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
