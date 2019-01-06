@@ -155,9 +155,10 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                 let cutoff = countsData.cutoff;
                                                 if (countsData.date == yyyymmdd()) {
                                                     no = countsData.no + 1;
-                                                } else {
-                                                    if (cutoff == true) cutoff = false;
-                                                }
+                                                } 
+                                                // else {
+                                                //     if (cutoff == true) cutoff = false;
+                                                // }
                                                 let orderId = yyyymmdd() + '-' + fourDigit(no);
                                                 let orderDate = yyyymmdd();
                                                 let cutoffDate = countsData.cutoffDate;
@@ -167,7 +168,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                     orderDate = resultOrder.data.id.split('-')[0];
                                                 } else {
                                                     if (cutoff === false) {
-                                                        db.collection('counter').doc('orders').update({ date: orderDate, no, cutoff })
+                                                        db.collection('counter').doc('orders').update({ date: orderDate, no })
                                                         // cutoff = false;
                                                     } else {
                                                         cutoffOk = false;
