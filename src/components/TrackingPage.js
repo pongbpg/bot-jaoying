@@ -165,7 +165,7 @@ export class TrackingPage extends React.Component {
                               <a href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
                                 {!order.expressName ?
                                   (order.cutoff ? 'จัดส่งแล้ว' : 'ยังไม่ได้จัดส่ง')
-                                  : order.expressName}
+                                  : 'คลิกที่นี่! ' + order.expressName}
                               </a>
                             </td>
                           </tr>;
@@ -192,7 +192,7 @@ export class TrackingPage extends React.Component {
                         <a className={`button is-link is-${color}`} href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
                           {!order.expressName ?
                             (order.cutoff ? 'จัดส่งแล้ว' : 'ยังไม่ได้จัดส่ง')
-                            : order.expressName}
+                            : 'คลิกที่นี่! ' + order.expressName}
                         </a>
                         <span className="tag is-medium">{order.tracking == '' ? (order.cutoff ? 'กำลังนำเลขพัสดุเข้าสู่ระบบ' : 'กำลังจัดเตรียมสินค้า') : order.tracking}</span>
                       </h3>
