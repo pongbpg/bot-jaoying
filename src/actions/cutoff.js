@@ -62,7 +62,7 @@ export const startCutOff = (id) => {
 export const startCutOn = (id) => {
     return (dispatch) => {
         firestore.collection('counter').doc('orders').update({ cutoff: false, cutoffDate: id })
-        firestore.collection('cutoffs').doc(id).set({ cutoff: false })
+        firestore.collection('cutoffs').doc(id).set({ cutoff: false, tracking: false })
         return firestore.collection('groups').get()
             .then(snapShot => {
                 let boardcasts = [];

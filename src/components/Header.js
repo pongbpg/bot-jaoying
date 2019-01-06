@@ -62,9 +62,9 @@ export class Header extends React.Component {
                 <Link className="navbar-item" to="/home">
                   <span className="icon"><FaHome /></span>หน้าแรก
                 </Link>
-                {/* <Link className="navbar-item" to="/">
+                <Link className="navbar-item" to="/">
                   <span className="icon"><FaSearch /></span>ค้นหาพัสดุ
-                </Link> */}
+                </Link>
                 < Link className="navbar-item" to="/cutoff">
                   <span className="icon"><MdAlarmOn /></span>ปิดรอบ
                     </Link>

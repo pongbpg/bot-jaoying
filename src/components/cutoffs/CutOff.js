@@ -50,7 +50,7 @@ export class CutOff extends React.Component {
                     </div>
                     <nav className="level">
                         <p className="level-item has-text-centered">
-                            <button className="button is-info is-centered is-large"
+                            <button className="button is-danger is-centered is-large"
                                 onClick={this.onCutOffClick}>
                                 คลิกเพื่อปิดรอบ {moment(this.state.cutoff.id).format('ll')} จ้า
                         </button>

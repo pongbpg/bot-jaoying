@@ -96,7 +96,7 @@ export class TrackingPage extends React.Component {
                 <h1 className="title has-text-white">ค้นหาเลขพัสดุ</h1>
                 <div className="field is-grouped">
                   <p className="control has-icons-left is-expanded">
-                    <input className="input is-large" type="text" placeholder="รหัสสั่งซื้อ/เบอร์โทรศัพท์"
+                    <input className="input is-large" type="text" placeholder="เบอร์โทรศัพท์ 10 หลัก ถ้าเป็นเบอร์บ้านเติม 0 ข้างหน้าค่ะ"
                       value={this.state.search}
                       onChange={this.onSearchChange} />
                     <span className="icon is-small is-left">
