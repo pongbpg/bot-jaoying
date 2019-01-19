@@ -428,10 +428,11 @@ const txtListOrders = (orders) => {
         '\nFB: ' + orders[len].fb +
         '\nยอดรวม: ' + formatMoney(orders.map(order => order.price).reduce((le, ri) => le + ri), 0) + ' บาท' +
         `\n===รายการสั่งซื้อ===` + orders.map((order, i) => {
-            return `\nครั้งที่ #` + (i + 1) + ' ' + order.id +
+            return `\n\nครั้งที่ #` + (i + 1) + ' ' + order.id +
                 order.product.map(product => {
                     return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'.replace(/,/g, '')
                 }) + '\nยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'.replace(/,/g, '')
+                +'\n------------------------------------'
         }) +
         `\n\n(โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง)` +
         `\n1.กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้ค่ะ` +
