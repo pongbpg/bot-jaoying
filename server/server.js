@@ -432,7 +432,7 @@ const txtListOrders = (orders) => {
                 order.product.map(product => {
                     return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'.replace(/,/g, '')
                 }) + '\nยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'.replace(/,/g, '')
-                +'\n------------------------------------'
+                +'\n---------------'
         }) +
         `\n\n(โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง)` +
         `\n1.กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้ค่ะ` +
