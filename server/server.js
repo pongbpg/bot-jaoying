@@ -155,7 +155,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                 let cutoff = countsData.cutoff;
                                                 if (countsData.date == yyyymmdd()) {
                                                     no = countsData.no + 1;
-                                                } 
+                                                }
                                                 // else {
                                                 //     if (cutoff == true) cutoff = false;
                                                 // }
@@ -205,10 +205,14 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                         snapShot.forEach(doc => {
                                                                             orders.push({ id: doc.id, ...doc.data() })
                                                                         })
-                                                                        obj.messages.push({
-                                                                            type: 'text',
-                                                                            text: txtListOrders(orders)
-                                                                        })
+                                                                        const txts = txtListOrders(orders);
+                                                                        const l = Math.ceil(txts.length / 2000) * 2000;
+                                                                        for (var i = 0; i < l; i += 2000) {
+                                                                            obj.messages.push({
+                                                                                type: 'text',
+                                                                                text: txtListOrders(orders).substr(i, 2000)
+                                                                            })
+                                                                        }
                                                                     })
                                                                 // await  obj.messages.push({
                                                                 //     type: 'text',
@@ -432,13 +436,13 @@ const txtListOrders = (orders) => {
                 order.product.map(product => {
                     return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'.replace(/,/g, '')
                 }) + '\nยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'.replace(/,/g, '')
-                +'\n---------------'
+                + '\n---------------'
         }) +
         `\n\n(โปรดอ่านทุกบรรทัด เพื่อผลประโยชน์ตัวท่านเอง)` +
         `\n1.กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้ค่ะ` +
         `\n2.แจ้งเลขพัสดุทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) ค่ะ` +
         `\n3.อย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทองทุกเดือน!!` +
-        `\n4.หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`+
+        `\n4.หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ` +
         `\n5.เลขพัสดุตรวจสอบได้ที่ลิ้งนี้นะคะ https://bot-jaoying.herokuapp.com`
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
