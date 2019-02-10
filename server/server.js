@@ -210,7 +210,7 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                         for (var i = 0; i < l; i += 2000) {
                                                                             obj.messages.push({
                                                                                 type: 'text',
-                                                                                text: txtListOrders(orders).substr(i, 2000)
+                                                                                text: txts.substr(i, 2000)
                                                                             })
                                                                         }
                                                                     })
