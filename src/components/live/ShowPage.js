@@ -35,7 +35,7 @@ export class LiveShowPage extends React.Component {
                     <div className="container">
                         <div className="columns">
                             <div className="column is-8">
-                                <h1 className="title has-text-white" style={{ fontSize: 150 }}>รหัส {this.state.live.id}</h1>
+                                <h1 className="title has-text-white" style={{ fontSize: 200 }}>รหัส {this.state.live.id}</h1>
                             </div>
                             <div className="column is-4 has-text-right" style={{ paddingTop: '25px' }}>
                                 <h1 className="title has-text-white is-2">
@@ -46,12 +46,12 @@ export class LiveShowPage extends React.Component {
                         </div>
                         <div className="columns" style={{ paddingTop: '30px' }}>
                             <div className="column is-full">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 130 }}>{this.state.live.name}</h1>
+                                <h1 className="title is-2 has-text-white" style={{ fontSize: 120 }}>{this.state.live.name}</h1>
                             </div>
                         </div>
                         <div className="columns" style={{ marginTop: '30px' }}>
                             <div className="column is-full">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 150 }}>ราคา {Money(this.state.live.price, 0)} บาท</h1>
+                                <h1 className="title is-2 has-text-white" style={{ fontSize: 300 }}>ราคา {Money(this.state.live.price, 0)}.-</h1>
                             </div>
                         </div>
                     </div>
