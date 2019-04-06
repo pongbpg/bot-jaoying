@@ -38,9 +38,9 @@ export class LiveShowPage extends React.Component {
                                 <h1 className="title has-text-white" style={{ fontSize: 150 }}>รหัส {this.state.live.id}</h1>
                             </div>
                             <div className="column is-4 has-text-right" style={{ paddingTop: '25px' }}>
-                                <h1 className="title has-text-white is-2">
+                                <h1 className="title has-text-white is-3">
                                     วันที่ {moment(this.state.date).format('LL')}
-                                    <br />เวลา {moment(this.state.date).format('LTS')}
+                                    <br />{moment(this.state.date).format('LTS')}
                                 </h1>
                             </div>
                         </div>
