@@ -51,7 +51,7 @@ export class LiveShowPage extends React.Component {
                         </div>
                         <div className="columns" style={{ marginTop: '30px' }}>
                             <div className="column is-full">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 300 }}>ราคา {Money(this.state.live.price, 0)}.-</h1>
+                                <h1 className="title is-2 has-text-white" style={{ fontSize: 280 }}>{Money(this.state.live.price, 0)}.-</h1>
                             </div>
                         </div>
                     </div>
