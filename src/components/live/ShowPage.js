@@ -49,7 +49,7 @@ export class LiveShowPage extends React.Component {
                                 <h1 className="title is-2 has-text-white" style={{ fontSize: 80 }}>{this.state.live.name}</h1>
                             </div>
                             <div className="column is-6 has-text-right">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 150 }}>{Money(this.state.live.price, 0)}.-</h1>
+                                <h1 className="title is-2 has-text-white" style={{ fontSize: 150 }}>฿{Money(this.state.live.price, 0)}</h1>
                             </div>
                         </div>
                         {/* <div className="columns" style={{ marginTop: '30px' }}>
