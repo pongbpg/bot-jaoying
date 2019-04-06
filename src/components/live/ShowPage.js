@@ -31,7 +31,7 @@ export class LiveShowPage extends React.Component {
     render() {
         return (
             <div className="hero is-danger is-fullheight">
-                <div className="hero-head" style={{ marginTop: '100px' }}>
+                <div className="hero-head" style={{ marginTop: '50px' }}>
                     <div className="container">
                         <div className="columns">
                             <div className="column is-6">
