@@ -7,6 +7,7 @@ export class AddProduct extends React.Component {
         super(props);
         this.state = {
             name: '',
+            size: '',
             amount: '',
             cost: '',
             price: ''
@@ -14,6 +15,21 @@ export class AddProduct extends React.Component {
     }
     onNameChange = (e) => {
         this.setState({ name: e.target.value })
+    }
+    onSizeChange = (e) => {
+        let size = e.target.value.replace(/\D/g, '');
+        if (size.length == 6) {
+            let newSize = '';
+            for (let i = 0; i < size.length; i++) {
+                newSize += size.charAt(i);
+                if ((i + 1) % 2 == 0 && i < 5) {
+                    newSize += '-';
+                }
+            }
+            this.setState({ size: newSize })
+        } else if (size.length < 6) {
+            this.setState({ size })
+        }
     }
     onAmountChange = (e) => {
         const amount = e.target.value.replace(/\D/g, '');
@@ -42,11 +58,12 @@ export class AddProduct extends React.Component {
     onAddClick = (e) => {
         this.props.startAddProduct({
             name: this.state.name,
+            size: this.state.size,
             amount: this.state.amount == '' ? 0 : this.state.amount,
             price: this.state.price == '' ? 0 : this.state.price,
             cost: this.state.cost == '' ? 0 : this.state.cost
         }).then(() => {
-            this.setState({ name: '', amount: '', cost: '', price: '' })
+            this.setState({ name: '', size: '', amount: '', cost: '', price: '' })
         })
     }
     onHandleKeyPress = (e) => {
@@ -63,10 +80,7 @@ export class AddProduct extends React.Component {
                     </div>
                 </div>
                 <div className="hero-body">
-                    <div className="field is-horizontal">
-                        {/* <div className="field-label is-normal">
-                            <label className="label">Normal label</label>
-                        </div> */}
+                    {/* <div className="field is-horizontal">
                         <div className="field-body">
                             <div className="field">
                                 <div className="control">
@@ -77,7 +91,34 @@ export class AddProduct extends React.Component {
                                 </div>
                             </div>
                         </div>
+                    </div> */}
+                    <div className="columns">
+                        <div className="column is-10">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="ชื่อสินค้า"
+                                            value={this.state.name}
+                                            onKeyPress={this.onHandleKeyPress}
+                                            onChange={this.onNameChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column is-2">
+                            <div className="field-body">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input" type="text" placeholder="ขนาด"
+                                            value={this.state.size}
+                                            onKeyPress={this.onHandleKeyPress}
+                                            onChange={this.onSizeChange} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div className="columns">
                         <div className="column is-3">
                             <div className="field-body">

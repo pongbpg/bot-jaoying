@@ -12,6 +12,7 @@ export class StockPage extends React.Component {
             auth: props.auth,
             id: '',
             name: '',
+            size: '',
             amount: 0,
             cost: 0,
             price: 0,
@@ -32,6 +33,21 @@ export class StockPage extends React.Component {
     onNameChange = (e) => {
         const name = e.target.value;
         this.setState({ name })
+    }
+    onSizeChange = (e) => {
+        let size = e.target.value.replace(/\D/g, '');
+        if (size.length == 6) {
+            let newSize = '';
+            for (let i = 0; i < size.length; i++) {
+                newSize += size.charAt(i);
+                if ((i + 1) % 2 == 0 && i < 5) {
+                    newSize += '-';
+                }
+            }
+            this.setState({ size: newSize })
+        } else if (size.length < 6) {
+            this.setState({ size })
+        }
     }
     onFilterChange = (e) => {
         const filter = e.target.value.replace(/\D/g, '');
@@ -87,11 +103,12 @@ export class StockPage extends React.Component {
             this.props.startUpdateProduct({
                 id: this.state.id,
                 name: this.state.name,
+                size: this.state.size,
                 amount: this.state.amount,
                 cost: this.state.cost,
                 price: this.state.price
             }).then(() => {
-                this.setState({ isLoading: '', action: false, id: '', name: '', amount: 0, price: 0, cost: 0 })
+                this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, cost: 0 })
             })
         } else {
             alert('กรุณาเลือกใหม่อีกรอบ')
@@ -104,7 +121,7 @@ export class StockPage extends React.Component {
                 this.props.startDeleteProduct({
                     id: this.state.id
                 }).then(() => {
-                    this.setState({ isLoading: '', action: false, id: '', name: '', amount: 0, price: 0, cost: 0 })
+                    this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, cost: 0 })
                 })
             }
         } else {
@@ -112,6 +129,8 @@ export class StockPage extends React.Component {
         }
     }
     render() {
+        let sumCost = 0;
+        let sumAmount = 0;
         return (
             <section className="hero">
                 <div className="hero-head">
@@ -138,6 +157,7 @@ export class StockPage extends React.Component {
                                 {/* <th className="has-text-centered">ลำดับ</th> */}
                                 <th className="has-text-left">รหัส</th>
                                 <th className="has-text-left">ชื่อสินค้า</th>
+                                <th className="has-text-left">ขนาด</th>
                                 <th className="has-text-right">COST</th>
                                 <th className="has-text-right">ราคา</th>
                                 <th className="has-text-right">คงเหลือ</th>
@@ -145,11 +165,16 @@ export class StockPage extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.stock.filter(f => f.amount == Number(this.state.filter) || this.state.filter == '').map((st, i) => {
+                            {this.state.stock.sort((a, b) => {
+                                return Number(a.id) > Number(b.id) ? 1 : -1
+                            }).filter(f => f.amount == Number(this.state.filter) || this.state.filter == '').map((st, i) => {
+                                sumCost += st.cost * st.amount;
+                                sumAmount += st.amount;
                                 if (this.state.id !== st.id) {
                                     return <tr key={st.id}>
                                         <td className="has-text-left">{st.id}</td>
                                         <td className="has-text-left">{st.name}</td>
+                                        <td className="has-text-centered">{st.size}</td>
                                         <td className="has-text-right">JY{Money(st.cost, 0)}</td>
                                         <td className="has-text-right">{Money(st.price, 0)}</td>
                                         <td className="has-text-right">{Money(st.amount, 0)}</td>
@@ -170,8 +195,19 @@ export class StockPage extends React.Component {
                                             <div className="control">
                                                 <input type="text" name={this.state.id}
                                                     className="input is-rounded has-text-left"
+                                                    placeholder="ชื่อสินค้า"
                                                     value={this.state.name}
                                                     onChange={this.onNameChange}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className="has-text-left">
+                                            <div className="control">
+                                                <input type="text" name={this.state.id}
+                                                    className="input is-rounded has-text-left"
+                                                    placeholder="ขนาด"
+                                                    value={this.state.size}
+                                                    onChange={this.onSizeChange}
                                                 />
                                             </div>
                                         </td>
@@ -179,6 +215,7 @@ export class StockPage extends React.Component {
                                             <div className="control">
                                                 <input type="text" name={this.state.id}
                                                     className="input is-rounded has-text-right"
+                                                    placeholder="COST"
                                                     onFocus={this.handleSelectAll}
                                                     value={Money(this.state.cost, 0)}
                                                     onChange={this.onCostChange}
@@ -189,6 +226,7 @@ export class StockPage extends React.Component {
                                             <div className="control">
                                                 <input type="text" name={this.state.id}
                                                     className="input is-rounded has-text-right"
+                                                    placeholder="ราคา"
                                                     onFocus={this.handleSelectAll}
                                                     value={Money(this.state.price, 0)}
                                                     onChange={this.onPriceChange}
@@ -199,6 +237,7 @@ export class StockPage extends React.Component {
                                             <div className="control">
                                                 <input type="text" name={this.state.id}
                                                     className="input is-rounded has-text-right"
+                                                    placeholder="จำนวน"
                                                     onFocus={this.handleSelectAll}
                                                     value={Money(this.state.amount, 0)}
                                                     onChange={this.onAmountChange}
@@ -275,6 +314,13 @@ export class StockPage extends React.Component {
 
                             })
                             }
+                            <tr>
+                                <td className="has-text-centered" colSpan={3}>รวม</td>
+                                <td className="has-text-right">JY{Money(sumCost, 0)}</td>
+                                <td></td>
+                                <td className="has-text-right">{Money(sumAmount, 0)}</td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
