@@ -241,9 +241,9 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                             obj.messages.push({
                                                                                 type: 'text',
                                                                                 text: `⚠กรุณาตรวจสอบรายการโอนนี้มีซ้ำ⚠
-                                                                                รหัสสั่งซื้อ:${doc.data().orderId} แอดมิน:${doc.data().admin}
-                                                                                FBลูกค้า:${doc.data().fb}
-                                                                                รายการที่ซ้ำ: ${doc.data().name} ${moment(doc.data().date, 'YYYYMMDD').format('DD/MM/YY')} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
+รหัสสั่งซื้อ:${doc.data().orderId} แอดมิน:${doc.data().admin}
+FBลูกค้า:${doc.data().fb}
+รายการที่ซ้ำ: ${doc.data().name} ${moment(doc.data().date, 'YYYYMMDD').format('DD/MM/YY')} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
                                                                             })
                                                                         })
                                                                         db.collection('payments').add({
