@@ -6,6 +6,8 @@ const publicPath = path.join(__dirname, '..', 'public');
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser')
 const admin = require('firebase-admin');
+const moment = require('moment');
+moment.locale('th');
 // const serviceAccount = require('./key.json');
 admin.initializeApp({
     // credential: admin.credential.cert(serviceAccount)
@@ -222,6 +224,36 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                     type: 'text',
                                                                     text: `@@ยกเลิก:${orderId}`
                                                                 })
+                                                                const bankData = {
+                                                                    name: resultOrder.data.bank.match(/[a-zA-Z]+/g, '')[0],
+                                                                    date: resultOrder.data.bank.match(/\d{2}\/\d{2}\/\d{2}/g)[0],
+                                                                    time: resultOrder.data.bank.match(/\d{2}\.\d{2}/g)[0],
+                                                                    price: resultOrder.data.price
+                                                                }
+                                                                await db.collection('payments')
+                                                                    .where('name', '==', bankData.name)
+                                                                    .where('date', '==', bankData.date)
+                                                                    .where('time', '==', bankData.time)
+                                                                    .where('price', '==', bankData.price)
+                                                                    .get()
+                                                                    .then(snapShot => {
+                                                                        snapShot.forEach(doc => {
+                                                                            obj.messages.push({
+                                                                                type: 'text',
+                                                                                text: `⚠กรุณาตรวจสอบรายการโอนนี้มีซ้ำ⚠
+                                                                                รหัสสั่งซื้อ:${doc.data().orderId} แอดมิน:${doc.data().admin}
+                                                                                FBลูกค้า:${doc.data().fb}
+                                                                                รายการที่ซ้ำ: ${doc.data().name} ${moment(doc.data().date, 'YYYYMMDD').format('DD/MM/YY')} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
+                                                                            })
+                                                                        })
+                                                                        db.collection('payments').add({
+                                                                            orderId,
+                                                                            ...bankData,
+                                                                            admin: user.data().name,
+                                                                            fb: resultOrder.data.fb
+                                                                        })
+                                                                    })
+
                                                                 await reply(obj);
                                                             }
                                                             callback();
@@ -363,8 +395,24 @@ const initMsgOrder = (txt) => {
                             value = `${emoji(0x1000A6)}undefined`;
                         }
                     } else if (key == 'bank') {
-                        if (value.match(/\d{2}\.\d{2}/g) == null || value.match(/[a-zA-Z]+/g, '') == null) {
-                            value = `${emoji(0x1000A6)}undefined`;
+                        let time = '', name = '', date = '';
+                        if (value.match(/\d{2}\.\d{2}/g) == null) {
+                            value = `${emoji(0x1000A6)}เวลาโอนundefined`;
+                        } else {
+                            time = value.match(/\d{2}\.\d{2}/g)[0];
+                        }
+                        if (value.match(/[a-zA-Z]+/g, '') == null) {
+                            value = `${emoji(0x1000A6)}ธนาคารundefined`;
+                        } else {
+                            name = value.match(/[a-zA-Z]+/g, '')[0];
+                        }
+                        if (value.match(/\d{6}/g) == null) {
+                            value = `${emoji(0x1000A6)}วันที่โอน(ววดดปป)undefined`;
+                        } else {
+                            date = value.match(/\d{6}/g)[0];
+                        }
+                        if (time != '' && name != '' && date != '') {
+                            value = name + ' ' + moment(date, 'DDMMYY').format('DD/MM/YY') + ' ' + time;
                         }
                     }
                 } else {
