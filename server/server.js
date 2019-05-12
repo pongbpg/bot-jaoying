@@ -126,6 +126,14 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                 .set({ amount: balance }, { merge: true })
                                                         })
                                                 }
+                                                await db.collection('payments')
+                                                    .where('orderId', '==', orderId)
+                                                    .get()
+                                                    .then(snapShot => {
+                                                        snapShot.forEach(pay => {
+                                                            pay.ref.delete();
+                                                        })
+                                                    })
                                                 await orderRef.delete()
                                                     .then(cancel => {
                                                         obj.messages.push({
