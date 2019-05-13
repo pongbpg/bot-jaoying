@@ -13,6 +13,7 @@ export class StockPage extends React.Component {
             id: '',
             name: '',
             size: '',
+            sale: 0,
             amount: 0,
             cost: 0,
             price: 0,
@@ -73,6 +74,16 @@ export class StockPage extends React.Component {
             console.log(cost)
         }
     }
+    onSaleChange = (e) => {
+        const sale = e.target.value.replace(/\D/g, '');
+        if (!isNaN(sale)) {
+            this.setState({
+                sale: Number(sale)
+            })
+        } else {
+            console.log(sale)
+        }
+    }
     onAmountChange = (e) => {
         const amount = e.target.value.replace(/\D/g, '');
         if (!isNaN(amount)) {
@@ -106,9 +117,10 @@ export class StockPage extends React.Component {
                 size: this.state.size,
                 amount: this.state.amount,
                 cost: this.state.cost,
+                sale: this.state.sale,
                 price: this.state.price
             }).then(() => {
-                this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, cost: 0 })
+                this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, sale: 0, cost: 0 })
             })
         } else {
             alert('กรุณาเลือกใหม่อีกรอบ')
@@ -121,7 +133,7 @@ export class StockPage extends React.Component {
                 this.props.startDeleteProduct({
                     id: this.state.id
                 }).then(() => {
-                    this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, cost: 0 })
+                    this.setState({ isLoading: '', action: false, id: '', name: '', size: '', amount: 0, price: 0, sale: 0, cost: 0 })
                 })
             }
         } else {
@@ -159,6 +171,7 @@ export class StockPage extends React.Component {
                                 <th className="has-text-left">ชื่อสินค้า</th>
                                 <th className="has-text-left">ขนาด</th>
                                 <th className="has-text-right">COST</th>
+                                <th className="has-text-right">SALE</th>
                                 <th className="has-text-right">ราคา</th>
                                 <th className="has-text-right">คงเหลือ</th>
                                 {this.state.auth.role == 'owner' && (< th className="has-text-right">จัดการ</th>)}
@@ -176,6 +189,7 @@ export class StockPage extends React.Component {
                                         <td className="has-text-left">{st.name}</td>
                                         <td className="has-text-centered">{st.size}</td>
                                         <td className="has-text-right">JY{Money(st.cost, 0)}</td>
+                                        <td className="has-text-right">{Money(st.sale, 0)}</td>
                                         <td className="has-text-right">{Money(st.price, 0)}</td>
                                         <td className="has-text-right">{Money(st.amount, 0)}</td>
                                         <td className="has-text-right">
@@ -219,6 +233,17 @@ export class StockPage extends React.Component {
                                                     onFocus={this.handleSelectAll}
                                                     value={Money(this.state.cost, 0)}
                                                     onChange={this.onCostChange}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className="has-text-right">
+                                            <div className="control">
+                                                <input type="text" name={this.state.id}
+                                                    className="input is-rounded has-text-right"
+                                                    placeholder="ราคา"
+                                                    onFocus={this.handleSelectAll}
+                                                    value={Money(this.state.sale, 0)}
+                                                    onChange={this.onSaleChange}
                                                 />
                                             </div>
                                         </td>
