@@ -8,12 +8,21 @@ export const startAddProduct = (product) => {
                 let count = 0;
                 // let free = 1;
                 snapShot.forEach(doc => {
-                    if (Number(doc.id) == count) {
-                        count++;
-                    } else {
-                        return true;
-                    }
+                    products.push({ id: Number(doc.id) })
                 })
+                products = products.sort((a, b) => a.id > b.id ? 1 : -1)
+                for (let i = 0; i < products.length; i++) {
+                    // console.log('round ', i)
+                    if (i != products[i].id) {
+                        count = i;
+                        console.log('แทน ', count)
+                        break;
+                    }
+                }
+                if (count == 0) {
+                    count = products.length;
+                }
+                // console.log(count)
                 return firestore.collection('products').doc(threeDigit(count)).set(product)
                     .then(() => {
                         return "ok"

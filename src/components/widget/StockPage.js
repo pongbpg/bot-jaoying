@@ -343,6 +343,7 @@ export class StockPage extends React.Component {
                                 <td className="has-text-centered" colSpan={3}>รวม</td>
                                 <td className="has-text-right">JY{Money(sumCost, 0)}</td>
                                 <td></td>
+                                <td></td>
                                 <td className="has-text-right">{Money(sumAmount, 0)}</td>
                                 <td></td>
                             </tr>
