@@ -10,12 +10,16 @@ export class CutOff extends React.Component {
         this.state = {
             cutoffs: props.cutoffs,
             cutoffDate: '',
-            tracks: []
+            tracks: [],
+            bank: props.bank
         }
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.cutoffs != this.state.cutoffs) {
             this.setState({ cutoffs: nextProps.cutoffs });
+        }
+        if (nextProps.bank != this.state.bank) {
+            this.setState({ bank: nextProps.bank });
         }
     }
     onFileChange = (e) => {
@@ -68,6 +72,7 @@ export class CutOff extends React.Component {
                 })
         }
     }
+
     render() {
         return (
             <table className="table is-fullwidth is-striped is-narrow">
@@ -77,6 +82,7 @@ export class CutOff extends React.Component {
                         <th className="has-text-left">รอบ</th>
                         <th className="has-text-centered">สถานะ</th>
                         <th className="has-text-centered">ยอดขาย</th>
+                        <th className="has-text-centered">ใบกำกับภาษี</th>
                         <th className="has-text-centered">เลขพัสดุ</th>
                         <th className="has-text-centered">สถานะอัพโหลด</th>
                     </tr>
@@ -90,6 +96,13 @@ export class CutOff extends React.Component {
                             <td className="has-text-centered">
                                 <a className="button is-primary is-centered is-small"
                                     href={`http://yaumjai.com:3000/api/jaoying/cutoffSale?cutoffDate=${moment(ct.id).format('YYYYMMDD')}&file=pdf`}
+                                    target="_blank">
+                                    PDF
+                                </a>
+                            </td>
+                            <td className="has-text-centered">
+                                <a className="button is-primary is-centered is-small"
+                                    href={`http://yaumjai.com:3000/api/jaoying/receipts?cutoffDate=${moment(ct.id).format('YYYYMMDD')}&file=pdf&bank=${this.state.bank}`}
                                     target="_blank">
                                     PDF
                                 </a>
@@ -121,7 +134,6 @@ export class CutOff extends React.Component {
     }
 }
 const mapStateToProps = (state, props) => ({
-    // cutoffs: state.cutoffs
 });
 const mapDispatchToProps = (dispatch, props) => ({
     startUploadTracks: (cutoffDate, tracks) => dispatch(startUploadTracks(cutoffDate, tracks)),

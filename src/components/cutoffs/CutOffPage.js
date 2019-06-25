@@ -10,6 +10,7 @@ export class CutOffPage extends React.Component {
         super(props);
         this.state = {
             cutoffs: props.cutoffs,
+            bank: ''
         }
         this.props.startGetCutOff()
     }
@@ -17,6 +18,9 @@ export class CutOffPage extends React.Component {
         if (nextProps.cutoffs != this.state.cutoffs) {
             this.setState({ cutoffs: nextProps.cutoffs });
         }
+    }
+    onBankChange = (e) => {
+        this.setState({ bank: e.target.value.toUpperCase() })
     }
     render() {
         const cutoff = this.state.cutoffs.find(f => f.cutoff === false);
@@ -26,7 +30,16 @@ export class CutOffPage extends React.Component {
                     <CutOff cutoff={cutoff} />
                 </div>
                 <div className="column">
-                    <Lists cutoffs={this.state.cutoffs} />
+                    <nav className="level">
+                        <div className="level-left has-text-centered">
+                        </div>
+                        <div className="level-right has-text-centered">
+                            <input type="text" onChange={this.onBankChange} value={this.state.bank}
+                                placeholder="รหัสธนาคาร"
+                                className="input" />
+                        </div>
+                    </nav>
+                    <Lists cutoffs={this.state.cutoffs} bank={this.state.bank} />
                 </div>
             </div>
         )
