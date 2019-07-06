@@ -8,7 +8,8 @@ export class LiveShowPage extends React.Component {
         super(props);
         this.state = {
             live: props.live,
-            date: moment()
+            date: moment(),
+            text: '#ff6600'
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -30,15 +31,15 @@ export class LiveShowPage extends React.Component {
     }
     render() {
         return (
-            <div className="hero is-link is-fullheight">
+            <div className="hero is-dark is-fullheight">
                 <div className="hero-head" style={{ marginTop: '50px' }}>
                     <div className="container">
                         <div className="columns">
                             <div className="column is-8">
-                                <h1 className="title has-text-white" style={{ fontSize: 150 }}>รหัส {this.state.live.id}</h1>
+                                <h1 className="title" style={{ fontSize: 150, color: this.state.text }}>รหัส {this.state.live.id}</h1>
                             </div>
                             <div className="column is-4 has-text-right" style={{ paddingTop: '25px' }}>
-                                <h1 className="title has-text-white is-3">
+                                <h1 className="title is-3" style={{ color: this.state.text }}>
                                     วันที่ {moment(this.state.date).format('LL')}
                                     <br />{moment(this.state.date).format('LTS')}
                                 </h1>
@@ -46,10 +47,10 @@ export class LiveShowPage extends React.Component {
                         </div>
                         <div className="columns" style={{ paddingTop: '30px' }}>
                             <div className="column is-6">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 80 }}>{this.state.live.name}</h1>
+                                <h1 className="title is-2" style={{ fontSize: 80, color: this.state.text }}>{this.state.live.name}</h1>
                             </div>
                             <div className="column is-6 has-text-centered">
-                                <h1 className="title is-2 has-text-white" style={{ fontSize: 140 }}>฿{Money(this.state.live.price, 0)}</h1>
+                                <h1 className="title is-2" style={{ fontSize: 140, color: this.state.text }}>฿{Money(this.state.live.price, 0)}</h1>
                             </div>
                         </div>
                         {/* <div className="columns" style={{ marginTop: '30px' }}>
