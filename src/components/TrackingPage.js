@@ -162,11 +162,12 @@ export class TrackingPage extends React.Component {
                             <td className="has-text-right">{Money(order.price)}</td>
                             <td className="has-text-centered">{order.tracking == '' ? (order.cutoff ? 'กำลังนำเลขพัสดุเข้าสู่ระบบ' : 'กำลังจัดเตรียมสินค้า') : order.tracking}</td>
                             <td className="has-text-centered">
-                              <a href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
+                              {/* <a href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
                                 {!order.expressName ?
                                   (order.cutoff ? 'จัดส่งแล้ว' : 'ยังไม่ได้จัดส่ง')
                                   : 'คลิกที่นี่! ' + order.expressName}
-                              </a>
+                              </a> */}
+                              <a href="https://th.kerryexpress.com/th/track/" target="_blank">ตรวจพัสดุเคอรี่</a>
                             </td>
                           </tr>;
                         })
@@ -189,11 +190,12 @@ export class TrackingPage extends React.Component {
                   return <div key={order.id} className="box content">
                     <article className="post">
                       <h3>
-                        <a className={`button is-link is-${color}`} href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
+                        {/* <a className={`button is-link is-${color}`} href={order.expressLink + (order.expressName == 'KERRY' ? '=' + order.tracking : '')} target="_blank">
                           {!order.expressName ?
                             (order.cutoff ? 'จัดส่งแล้ว' : 'ยังไม่ได้จัดส่ง')
                             : 'คลิกที่นี่! ' + order.expressName}
-                        </a>
+                        </a> */}
+                        <a className="button is-link is-success" href="https://th.kerryexpress.com/th/track/" target="_blank">ตรวจพัสดุเคอรี่</a>
                         <span className="tag is-medium">{order.tracking == '' ? (order.cutoff ? 'กำลังนำเลขพัสดุเข้าสู่ระบบ' : 'กำลังจัดเตรียมสินค้า') : order.tracking}</span>
                       </h3>
                       <h4>{order.name}</h4>
