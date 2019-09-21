@@ -13,6 +13,21 @@ export const startGetStock = () => {
             })
     }
 }
+export const startClearNameAmount0 = () => {
+    // console.log('get stock')
+    return (dispatch) => {
+        return firestore.collection('products')
+            .where('name', '>', '')
+            .where('amount', '==', 0)
+            .get()
+            .then(snapShot => {
+                snapShot.forEach(doc => {
+                    doc.ref.update({ name: "" })
+                })
+                // return dispatch(true);
+            })
+    }
+}
 // export const startChangeStock = (stock) => {
 //     return (dispatch) => {
 //         return firestore.collection('products').doc(stock.id).get()

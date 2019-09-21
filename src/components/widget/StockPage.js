@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startGetStock } from '../../actions/widget/stock';
+import { startGetStock, startClearNameAmount0 } from '../../actions/widget/stock';
 import { startUpdateProduct, startDeleteProduct } from '../../actions/widget/product';
 import Money from '../../selectors/money';
 import MdEdit from 'react-icons/lib/md/edit';
@@ -140,6 +140,15 @@ export class StockPage extends React.Component {
             alert('สินค้านี้ยังมีสต็อกคงเหลือไม่สามารถลบได้')
         }
     }
+    onClearNameClick = () => {
+        if (confirm('คุณแน่ใจที่จะล้างชื่อสินค้าทั้งหมดที่มีจำนวนเหลือเท่ากับ 0 ?')) {
+            this.props.startClearNameAmount0()
+                .then((res) => {
+                    alert('ล้างชื่อสินค้าเรียบร้อย!')
+                })
+
+        }
+    }
     render() {
         let sumCost = 0;
         let sumAmount = 0;
@@ -151,13 +160,25 @@ export class StockPage extends React.Component {
                     </div>
                 </div>
                 <div className="hero-body">
-                    <div className="columns">
-                        <div className="column is-2 is-offset-10">
-                            <div className="field">
-                                <div className="control">
-                                    <input className="input has-text-centered" type="text" placeholder="จำนวน"
-                                        value={this.state.filter}
-                                        onChange={this.onFilterChange} />
+                    <div className="level">
+                        <div className="level-left">
+                            <div className="level-item">
+                                <div className="field">
+                                    <div className="control">
+                                        <button className="button is-info"
+                                            onClick={this.onClearNameClick}>ล้างชื่อสินค้า</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="level-right">
+                            <div className="level-item">
+                                <div className="field">
+                                    <div className="control">
+                                        <input className="input has-text-centered" type="text" placeholder="จำนวน"
+                                            value={this.state.filter}
+                                            onChange={this.onFilterChange} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -360,6 +381,7 @@ const mapStateToProps = (state, props) => ({
 });
 const mapDispatchToProps = (dispatch, props) => ({
     startGetStock: () => dispatch(startGetStock()),
+    startClearNameAmount0: () => dispatch(startClearNameAmount0()),
     startUpdateProduct: (product) => dispatch(startUpdateProduct(product)),
     startDeleteProduct: (product) => dispatch(startDeleteProduct(product))
 });
