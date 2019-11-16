@@ -28,6 +28,19 @@ export const startClearNameAmount0 = () => {
             })
     }
 }
+export const startClearStock = () => {
+    // console.log('get stock')
+    return (dispatch) => {
+        return firestore.collection('products')
+            .get()
+            .then(snapShot => {
+                snapShot.forEach(doc => {
+                    doc.ref.delete()
+                })
+                // return dispatch(true);
+            })
+    }
+}
 // export const startChangeStock = (stock) => {
 //     return (dispatch) => {
 //         return firestore.collection('products').doc(stock.id).get()

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startGetStock, startClearNameAmount0 } from '../../actions/widget/stock';
+import { startGetStock, startClearNameAmount0, startClearStock } from '../../actions/widget/stock';
 import { startUpdateProduct, startDeleteProduct } from '../../actions/widget/product';
 import Money from '../../selectors/money';
 import MdEdit from 'react-icons/lib/md/edit';
@@ -149,6 +149,14 @@ export class StockPage extends React.Component {
 
         }
     }
+    onClearStockClick = () => {
+        if (confirm('คุณแน่ใจที่จะล้างรายการสินค้าทั้งหมด!?')) {
+            this.props.startClearStock()
+                .then((res) => {
+                    alert('ล้างสินค้าเรียบร้อย!')
+                })
+        }
+    }
     render() {
         let sumCost = 0;
         let sumAmount = 0;
@@ -167,6 +175,14 @@ export class StockPage extends React.Component {
                                     <div className="control">
                                         <button className="button is-info"
                                             onClick={this.onClearNameClick}>ล้างชื่อสินค้า</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="level-item">
+                                <div className="field">
+                                    <div className="control">
+                                        <button className="button is-danger"
+                                            onClick={this.onClearStockClick}>ล้างทั้งหมด</button>
                                     </div>
                                 </div>
                             </div>
@@ -382,6 +398,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => ({
     startGetStock: () => dispatch(startGetStock()),
     startClearNameAmount0: () => dispatch(startClearNameAmount0()),
+    startClearStock: () => dispatch(startClearStock()),
     startUpdateProduct: (product) => dispatch(startUpdateProduct(product)),
     startDeleteProduct: (product) => dispatch(startDeleteProduct(product))
 });
