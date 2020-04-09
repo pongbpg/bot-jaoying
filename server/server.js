@@ -8,7 +8,11 @@ const bodyParser = require('body-parser')
 const admin = require('firebase-admin');
 const moment = require('moment');
 moment.locale('th');
-// const serviceAccount = require('./key.json');
+
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config({ path: '.env.development' });
+}
+
 admin.initializeApp({
     // credential: admin.credential.cert(serviceAccount)
     credential: admin.credential.cert({
@@ -422,6 +426,20 @@ const initMsgOrder = (txt) => {
                         if (time != '' && name != '' && date != '') {
                             value = name + ' ' + moment(date, 'DDMMYY').format('DD/MM/YY') + ' ' + time;
                         }
+                    // } else if (key == 'addr') {
+                    //     value = value.replace(/\n/g, ' ');
+                    //     const postcode = value.match(/[0-9]{5}/g);
+                    //     if (postcode == null) {
+                    //         value = `${value + ' ' + emoji(0x1000A6)}ไม่มีรหัสไปรษณีย์undefined`
+                    //     } else {
+                    //         //รหัสไปรษณีย์
+                    //         const rawdata = fs.readFileSync('./server/postcode.json');
+                    //         const postcodes = JSON.parse(rawdata)
+                    //         if (postcodes.indexOf(Number(postcode[postcode.length - 1])) == -1) {
+                    //             value = `${value + ' ' + emoji(0x1000A6)}รหัสไปรษณีย์ไม่ถูกต้องundefined`
+                    //         }
+                    //     }
+                    //     value = value.replace('99999', '')
                     }
                 } else {
                     value = Number(value.replace(/\D/g, ''));
@@ -498,8 +516,8 @@ const txtListOrders = (orders) => {
         `\n1.กรุณาตรวจสอบรายการสั่งซื้อด้วยนะคะ ถ้าไม่ถูกต้องแจ้งแอดมินให้แก้ไขทันที หากจัดส่งแล้วจะไม่สามารถแก้ไขได้ค่ะ` +
         `\n2.แจ้งเลขพัสดุทางอินบล็อคเท่านั้น Kerry 1-3 วัน (แล้วแต่พื้นที่นั้นๆ) ค่ะ` +
         `\n3.อย่าลืมส่งรีวิวสวยๆกลับมา..ลุ้นทองทุกเดือน!!` +
-        `\n4.หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ` 
-        // `\n5.เลขพัสดุตรวจสอบได้ที่ลิ้งนี้นะคะ https://bot-jaoying.herokuapp.com`
+        `\n4.หากลูกค้าเจอสินค้าตำหนิสามารถส่งกลับมาเปลี่ยนทางร้านได้ไม่เกิน 2-4 วัน ในสภาพเดิม ไม่ซัก ไม่แกะป้าย นะคะ!!...หากเกินระยะเวลาที่กำหนดทางร้านจะไม่รับเปลี่ยนทุกกรณีคะ`
+    // `\n5.เลขพัสดุตรวจสอบได้ที่ลิ้งนี้นะคะ https://bot-jaoying.herokuapp.com`
 }
 const formatMoney = (amount, decimalCount = 2, decimal = ".", thousands = ",") => {
     try {
