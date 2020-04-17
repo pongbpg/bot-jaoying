@@ -23,7 +23,7 @@ export const startAddProduct = (product) => {
                     count = products.length;
                 }
                 // console.log(count)
-                return firestore.collection('products').doc(threeDigit(count)).set(product)
+                return firestore.collection('products').doc(threeDigit(count)).set({ ...product, id: threeDigit(count) })
                     .then(() => {
                         return "ok"
                     })

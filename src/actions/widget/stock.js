@@ -28,10 +28,11 @@ export const startClearNameAmount0 = () => {
             })
     }
 }
-export const startClearStock = () => {
+export const startClearStock = (ids) => {
     // console.log('get stock')
     return (dispatch) => {
         return firestore.collection('products')
+            .where('id', '>', ids)
             .get()
             .then(snapShot => {
                 snapShot.forEach(doc => {

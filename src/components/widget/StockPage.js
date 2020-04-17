@@ -4,6 +4,7 @@ import { startGetStock, startClearNameAmount0, startClearStock } from '../../act
 import { startUpdateProduct, startDeleteProduct } from '../../actions/widget/product';
 import Money from '../../selectors/money';
 import MdEdit from 'react-icons/lib/md/edit';
+import NumberFormat from 'react-number-format';
 export class StockPage extends React.Component {
     constructor(props) {
         super(props);
@@ -19,13 +20,14 @@ export class StockPage extends React.Component {
             price: 0,
             action: false,
             isLoading: '',
-            filter: ''
+            filter: '',
+            valueDel: 0
         }
         this.props.startGetStock();
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.stock != this.state.stock) {
-            this.setState({ stock: nextProps.stock });
+            this.setState({ stock: nextProps.stock, valueDel: nextProps.stock.length - 1 });
         }
         if (nextProps.auth != this.state.auth) {
             this.setState({ auth: nextProps.auth });
@@ -150,13 +152,23 @@ export class StockPage extends React.Component {
         }
     }
     onClearStockClick = () => {
-        if (confirm('คุณแน่ใจที่จะล้างรายการสินค้าทั้งหมด!?')) {
-            this.props.startClearStock()
+        if (confirm('คุณแน่ใจที่จะล้างรายการสินค้า รหัส ' + this.threeDigit(this.state.valueDel) + ' ขึ้นไป!?')) {
+            this.props.startClearStock(this.threeDigit(this.state.valueDel))
                 .then((res) => {
                     alert('ล้างสินค้าเรียบร้อย!')
                 })
         }
     }
+    threeDigit = (n) => {
+        if (n < 10) {
+            return '00' + n.toString();
+        } else if (n < 100) {
+            return '0' + n.toString()
+        } else {
+            return n.toString();
+        }
+    }
+
     render() {
         let sumCost = 0;
         let sumAmount = 0;
@@ -179,10 +191,21 @@ export class StockPage extends React.Component {
                                 </div>
                             </div>
                             <div className="level-item">
-                                <div className="field">
+                                <div className="field is-grouped">
                                     <div className="control">
                                         <button className="button is-danger"
-                                            onClick={this.onClearStockClick}>ล้างทั้งหมด</button>
+                                            onClick={this.onClearStockClick}>ล้างมากกว่า&gt;&gt;&gt;</button>
+                                    </div>
+                                    <div className="control">
+                                        <NumberFormat className="input is-rounded has-text-right" thousandSeparator={true}
+                                            value={this.state.valueDel}
+                                            onFocus={this.handleSelectAll}
+                                            onValueChange={(values) => {
+                                                const { formattedValue, value, floatValue } = values;
+                                                // formattedValue = $2,223
+                                                // value ie, 2223
+                                                this.setState({ valueDel: floatValue })
+                                            }} />
                                     </div>
                                 </div>
                             </div>
@@ -398,7 +421,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => ({
     startGetStock: () => dispatch(startGetStock()),
     startClearNameAmount0: () => dispatch(startClearNameAmount0()),
-    startClearStock: () => dispatch(startClearStock()),
+    startClearStock: (ids) => dispatch(startClearStock(ids)),
     startUpdateProduct: (product) => dispatch(startUpdateProduct(product)),
     startDeleteProduct: (product) => dispatch(startDeleteProduct(product))
 });
