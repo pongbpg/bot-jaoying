@@ -222,10 +222,11 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                         const txts = txtListOrders(orders);
                                                                         const l = Math.ceil(txts.length / 2000) * 2000;
                                                                         for (var i = 0; i < l; i += 2000) {
-                                                                            obj.messages.push({
-                                                                                type: 'text',
-                                                                                text: txts.substr(i, 2000)
-                                                                            })
+                                                                            if (obj.messages.length < 5)
+                                                                                obj.messages.push({
+                                                                                    type: 'text',
+                                                                                    text: txts.substr(i, 2000)
+                                                                                })
                                                                         }
                                                                     })
                                                                 // await  obj.messages.push({
@@ -249,15 +250,21 @@ app.post('/api/linebot', jsonParser, (req, res) => {
                                                                     .where('price', '==', bankData.price)
                                                                     .get()
                                                                     .then(snapShot => {
+                                                                        let txtp = '';
                                                                         snapShot.forEach(doc => {
-                                                                            obj.messages.push({
-                                                                                type: 'text',
-                                                                                text: `⚠กรุณาตรวจสอบรายการโอนนี้มีซ้ำ⚠
-รหัสสั่งซื้อ:${doc.data().orderId} แอดมิน:${doc.data().admin}
-FBลูกค้า:${doc.data().fb}
-รายการที่ซ้ำ: ${doc.data().name} ${doc.data().date} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
-                                                                            })
+                                                                            txtp += `⚠กรุณาตรวจสอบรายการโอนนี้มีซ้ำ⚠
+                                                                            รหัสสั่งซื้อ:${doc.data().orderId} แอดมิน:${doc.data().admin}
+                                                                            FBลูกค้า:${doc.data().fb}
+                                                                            รายการที่ซ้ำ: ${doc.data().name} ${doc.data().date} ${doc.data().time} จำนวน ${formatMoney(doc.data().price, 0)} บาท`
                                                                         })
+                                                                        const l = Math.ceil(txtp.length / 2000) * 2000;
+                                                                        for (var i = 0; i < l; i += 2000) {
+                                                                            if (obj.messages.length < 5)
+                                                                                obj.messages.push({
+                                                                                    type: 'text',
+                                                                                    text: txtp.substr(i, 2000)
+                                                                                })
+                                                                        }
                                                                         db.collection('payments').add({
                                                                             orderId,
                                                                             ...bankData,
@@ -426,20 +433,20 @@ const initMsgOrder = (txt) => {
                         if (time != '' && name != '' && date != '') {
                             value = name + ' ' + moment(date, 'DDMMYY').format('DD/MM/YY') + ' ' + time;
                         }
-                    // } else if (key == 'addr') {
-                    //     value = value.replace(/\n/g, ' ');
-                    //     const postcode = value.match(/[0-9]{5}/g);
-                    //     if (postcode == null) {
-                    //         value = `${value + ' ' + emoji(0x1000A6)}ไม่มีรหัสไปรษณีย์undefined`
-                    //     } else {
-                    //         //รหัสไปรษณีย์
-                    //         const rawdata = fs.readFileSync('./server/postcode.json');
-                    //         const postcodes = JSON.parse(rawdata)
-                    //         if (postcodes.indexOf(Number(postcode[postcode.length - 1])) == -1) {
-                    //             value = `${value + ' ' + emoji(0x1000A6)}รหัสไปรษณีย์ไม่ถูกต้องundefined`
-                    //         }
-                    //     }
-                    //     value = value.replace('99999', '')
+                        // } else if (key == 'addr') {
+                        //     value = value.replace(/\n/g, ' ');
+                        //     const postcode = value.match(/[0-9]{5}/g);
+                        //     if (postcode == null) {
+                        //         value = `${value + ' ' + emoji(0x1000A6)}ไม่มีรหัสไปรษณีย์undefined`
+                        //     } else {
+                        //         //รหัสไปรษณีย์
+                        //         const rawdata = fs.readFileSync('./server/postcode.json');
+                        //         const postcodes = JSON.parse(rawdata)
+                        //         if (postcodes.indexOf(Number(postcode[postcode.length - 1])) == -1) {
+                        //             value = `${value + ' ' + emoji(0x1000A6)}รหัสไปรษณีย์ไม่ถูกต้องundefined`
+                        //         }
+                        //     }
+                        //     value = value.replace('99999', '')
                     }
                 } else {
                     value = Number(value.replace(/\D/g, ''));
