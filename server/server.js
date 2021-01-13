@@ -515,7 +515,7 @@ const txtListOrders = (orders) => {
         `\n===รายการสั่งซื้อ===` + orders.map((order, i) => {
             return `\n\nครั้งที่ #` + (i + 1) + ' ' + order.id +
                 order.product.map(product => {
-                    return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' ชิ้น'.replace(/,/g, '')
+                    return '\n' + product.code + ': ' + product.name + ' ' + product.amount + ' รายการ'.replace(/,/g, '')
                 }) + '\nยอดโอน' + order.bank + ' ' + formatMoney(order.price, 0) + ' บาท'.replace(/,/g, '')
                 + '\n---------------'
         }) +
